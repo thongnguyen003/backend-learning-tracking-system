@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('archievement_images', function (Blueprint $table) {
             $table->id();
             $table->String('link',225);
+            $table->unsignedBigInteger('archievement_id');
+            $table->foreign('archievement_id')->references('id')->on('achievements')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

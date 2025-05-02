@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('achievements', function (Blueprint $table) {
+        Schema::create('routine_details', function (Blueprint $table) {
             $table->id();
             $table->String('title',50);
             $table->String('description', 225);
-            $table->unsignedBigInteger('image_id');
+            $table->datetime('start_time');
+            $table->datetime('end_time');
+            $table->unsignedBigInteger('routine_id');
+            $table->foreign('routine_id')->references('id')->on('routines')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
-            $table->foreign('image_id')->references('id')->on('archievement_images')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('archievements');
+        Schema::dropIfExists('routine_details');
     }
 };

@@ -20,9 +20,7 @@ return new class extends Migration
             $table->string('phone_number', 255)->nullable();
             $table->string('email', 255); 
             $table->text('password'); 
-            $table->unsignedBigInteger('achievement_id'); 
             $table->unsignedBigInteger('class_id'); 
-            $table->foreign('achievement_id')->references('id')->on('achievements')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
