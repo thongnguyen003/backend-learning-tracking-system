@@ -22,7 +22,11 @@ class DatabaseSeeder extends Seeder
             ClassTeacherSeeder::class,
             CourseSeeder::class,
             StudentSeeder::class,
-            CourseStudentSeeder::class
+            CourseStudentSeeder::class,
+            JournalSeeder::class,
+            JournalClassesSeeder::class,
+            JournalGoalSeeder::class,
+            JournalSelfSeeder::class
         ]);
     }
 }
