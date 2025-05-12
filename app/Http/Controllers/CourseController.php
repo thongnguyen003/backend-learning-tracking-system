@@ -4,70 +4,56 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\CourseService;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\CourseRequest; // Import the new request class
+
 class CourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    protected $service;
-    public function __construct(CourseService $service){
+    protected CourseService $service;
+
+    public function __construct(CourseService $service)
+    {
         $this->service = $service;
     }
-    public function index()
+
+    public function index(): JsonResponse
     {
-        //
+        $courses = $this->service->getAll();
+        return response()->json($courses);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show(int $id): JsonResponse
     {
-        //
+        $course = $this->service->getById($id);
+        if ($course) {
+            return response()->json($course);
+        }
+        return response()->json(['message' => 'Course not found'], 404);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(CourseRequest $request): JsonResponse
     {
-        //
+        $data = $request->validated();
+        $course = $this->service->create($data);
+        return response()->json($course, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(CourseRequest $request, int $id): JsonResponse
     {
-        //
-    }
-    public function getCourseByStudentId($id){
-        $result = $this->service->getCoursesDetailsByStudentId($id);
-        return response()->json($result);
+        $data = $request->validated();  // Use validated data from the request
+        $course = $this->service->update($id, $data);
+        if ($course) {
+            return response()->json($course);
+        }
+        return response()->json(['message' => 'Course not found or update failed'], 404);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function destroy(int $id): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $deleted = $this->service->delete($id);
+        if ($deleted) {
+            return response()->json(['message' => 'Course deleted successfully']);
+        }
+        return response()->json(['message' => 'Course not found or delete failed'], 404);
     }
 }

@@ -17,4 +17,3 @@ class CourseGoalService
         return $this->repository->getByCourseStudentId($courseStudentId);
     }
 }
-

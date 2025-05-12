@@ -16,5 +16,5 @@ class CourseGoalRepository
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
+
 }

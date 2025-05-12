@@ -24,3 +24,9 @@ Route::get('course-goals/{courseStudentId}', [CourseGoalController::class, 'inde
 Route::group(['prefix'=>'journal'],function(){
     Route::get('/getByCourseStudentId/{id}',[JournalController::class,'getJournalsByCourseStudentId']);
 });
+Route::apiResource('courses', CourseController::class);
+
+
+// use App\Http\Middleware\AuthMiddleware;
+
+// Route::post('/login', [AuthController::class, 'login']);

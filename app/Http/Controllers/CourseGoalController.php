@@ -19,13 +19,12 @@ class CourseGoalController extends Controller
     public function indexByStudent($courseStudentId)
     {
         $goals = $this->service->getGoalsByStudentId($courseStudentId);
-        
+
         if ($goals->isEmpty()) {
             return response()->json(['message' => 'No course goals found for this student.'], 404);
         }
-    
+
         return response()->json($goals);
     }
-    
-}
 
+}

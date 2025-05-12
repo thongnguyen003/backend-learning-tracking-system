@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\AuthRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Exception;
 
 class AuthService
@@ -27,6 +28,10 @@ class AuthService
             throw new Exception('Invalid password');
         }
 
-        return $user;
+        // Generate a token string
+        $token = Str::random(60);
+
+        // Return user and token
+        return ['user' => $user, 'token' => $token];
     }
 }
