@@ -14,6 +14,9 @@ class CourseRepository extends Repository {
             $query1->select( 'teachers.id','teacher_name');
         }])
         ->withCount('students')
+        ->with(['courseStudents' => function($query2) {
+            $query2->select('id', 'course_students.course_id', 'course_students.student_id'); // Thêm khóa course_student_id vào đây
+        }])
         ->get();
         if ($courses->isEmpty()) {
             return response()->json(['message' => 'No courses found for the given student ID'], 404);

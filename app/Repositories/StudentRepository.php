@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 use App\Models\Student;
+use Illuminate\Support\Facades\Hash;
 class StudentRepository extends Repository{
     public function __construct(Student $model){
         $this->model = $model;
@@ -20,5 +21,18 @@ class StudentRepository extends Repository{
         }else{
             return response()->json(['error' => 'Unexited Account'], 401);
         }
+    }
+    public function updatePassword($id, $newPassword)
+    {
+        $student = $this->model->find($id);
+        if ($student) {
+            $student->password = Hash::make($newPassword);
+            $student->save();
+        }
+    }
+    
+
+    public function findById(int $id){
+        return $this->model->find($id);
     }
 }
