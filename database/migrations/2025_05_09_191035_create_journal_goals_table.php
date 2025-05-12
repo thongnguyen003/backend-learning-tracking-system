@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('archievement_images', function (Blueprint $table) {
+        Schema::create('journal_goals', function (Blueprint $table) {
             $table->id();
-            $table->String('link',225);
-            $table->unsignedBigInteger('archievement_id');
-            $table->foreign('archievement_id')->references('id')->on('archievements')->onDelete('cascade');
+            $table->unsignedBigInteger('journal_id'); 
+            $table->text('title')->nullable(); 
+            $table->integer('state')->default(1); 
+            $table->dateTime('date');
+            $table->foreign('journal_id')->references('id')->on('journals')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('archievement_images');
+        Schema::dropIfExists('journal_goals');
     }
 };
