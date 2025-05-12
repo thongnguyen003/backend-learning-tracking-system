@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\CourseService;
+use App\Services\JournalService;
 use Illuminate\Support\Facades\Response;
-class CourseController extends Controller
+
+class JournalController extends Controller
 {
+    protected $service;
+    public function __construct(JournalService $service){
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      */
-    protected $service;
-    public function __construct(CourseService $service){
-        $this->service = $service;
-    }
     public function index()
     {
         //
@@ -42,8 +43,8 @@ class CourseController extends Controller
     {
         //
     }
-    public function getCourseByStudentId($id){
-        $result = $this->service->getCoursesDetailsByStudentId($id);
+    public function getJournalsByCourseStudentId($id){
+        $result = $this->service->getJournalsDetailsByCourseStudentId($id);
         return response()->json($result);
     }
 
