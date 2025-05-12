@@ -1,11 +1,10 @@
 <?php
 namespace App\Services;
+
 use App\Repositories\CourseRepository;
-class CourseService extends Service {
-    public function __construct(CourseRepository $repo){
-        $this->repository = $repo;
-    }
-    public function getCoursesDetailsByStudentId(int $studentId){
-        return $this->repository->getCoursesDetailsByStudentId($studentId);
+
+class CourseService extends BaseService {
+    public function __construct(CourseRepository $repository) {
+        parent::__construct($repository);
     }
 }

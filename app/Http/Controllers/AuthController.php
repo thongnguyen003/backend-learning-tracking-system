@@ -21,12 +21,13 @@ class AuthController extends Controller
         $password = $request->input('password');
 
         try {
-            $user = $this->authService->login($role, $email, $password);
+            $result = $this->authService->login($role, $email, $password);
 
             return response()->json([
                 'message' => 'Login successful',
                 'role' => $role,
-                'user' => $user
+                'user' => $result['user'],
+                'token' => $result['token']
             ]);
         } catch (Exception $e) {
             return response()->json([
