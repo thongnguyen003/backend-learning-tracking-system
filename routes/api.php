@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseGoalController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalController;
+use App\Http\Controllers\MessageController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -23,4 +24,7 @@ Route::post('/login', [AuthController::class, 'login'])->middleware(AuthMiddlewa
 Route::get('course-goals/{courseStudentId}', [CourseGoalController::class, 'indexByStudent']);
 Route::group(['prefix'=>'journal'],function(){
     Route::get('/getByCourseStudentId/{id}',[JournalController::class,'getJournalsByCourseStudentId']);
+});
+Route::group(['prefix'=>'message'],function(){
+    Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
 });

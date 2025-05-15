@@ -3,6 +3,7 @@
 namespace App\Models;
 use App\Models\CourseStudent;
 use App\Models\Course;
+use App\Models\DetailMessage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Student extends Model
@@ -23,5 +24,8 @@ class Student extends Model
         return $this->belongsToMany(Course::class,'course_students')
         ->using(CourseStudent::class)
         ->withTimeStamps();
+    }
+    public function detail_messages (){
+        return $this->hasMany(DetailMessage::class,'student_id');
     }
 }
