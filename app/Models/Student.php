@@ -14,4 +14,23 @@ class Student extends Model
         ->using(CourseStudent::class)
         ->withTimeStamps();
     }
+
+    protected $fillable = [
+        'student_name',
+        'day_of_birth',
+        'gender',
+        'hometown',
+        'phone_number',
+        'email',
+        'password',
+        'class_id',
+    ];
+
+    /**
+     * Liên kết với model Class.
+     */
+    public function class()
+    {
+        return $this->belongsTo(ClassModel::class, 'class_id');
+    }
 }

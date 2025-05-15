@@ -14,3 +14,6 @@ Route::group(['prefix'=>'course'],function(){
 });
 
 Route::put('/student/change-password/{id}', [StudentController::class, 'changePassword']);
+
+Route::get('/student/{id}', [StudentController::class, 'show']);
+Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);

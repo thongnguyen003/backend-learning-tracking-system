@@ -34,10 +34,10 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    // public function show(string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -50,10 +50,10 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    // public function update(Request $request, string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -82,6 +82,26 @@ class StudentController extends Controller
             return $this->studentService->changePassword($id, $data);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+   public function updateProfile(Request $request, $id)
+    {
+        $data = $request->validate([
+            'student_name' => 'required|string|max:50',
+            'day_of_birth' => 'nullable|date',
+            'gender' => 'required|in:male,female,other',
+            'hometown' => 'nullable|string|max:255',
+            'phone_number' => 'nullable|string|max:255',
+            'email' => 'required|email|max:255',
+            'password' => 'required|string|min:6',
+            'class_id' => 'required|exists:classes,id',
+        ]);
+
+        try {
+            $student = $this->studentService->updateStudentProfile($id, $data);
+            return response()->json(['message' => 'Student profile updated successfully', 'data' => $student], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }
