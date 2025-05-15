@@ -1,14 +1,22 @@
 <?php
-
 namespace App\Models;
-use App\Models\Course;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-class Teacher extends Model
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Teacher extends Authenticatable
 {
-    use HasFactory; 
-    //
-    public function courses (){
-        return $this->hasMany(Course::class,'teacher_id');
-    }
+    use HasApiTokens, Notifiable;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 }

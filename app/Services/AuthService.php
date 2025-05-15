@@ -1,37 +1,49 @@
 <?php
-
 namespace App\Services;
 
-use App\Repositories\AuthRepository;
+use App\Models\User;
+use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Exception;
 
 class AuthService
 {
-    protected $authRepo;
-
-    public function __construct(AuthRepository $authRepo)
-    {
-        $this->authRepo = $authRepo;
-    }
-
     public function login($role, $email, $password)
     {
-        $user = $this->authRepo->getUserByRoleAndEmail($role, $email);
+        \Log::info('Login attempt', ['role' => $role, 'email' => $email]);
+
+        $user = null;
+        $model = null;
+
+        switch ($role) {
+            case 'student':
+                $model = Student::class;
+                break;
+            case 'teacher':
+                $model = Teacher::class;
+                break;
+            default:
+                $model = User::class;
+                break;
+        }
+
+        $user = $model::where('email', $email)->first();
 
         if (!$user) {
+            \Log::error('User not found', ['role' => $role, 'email' => $email]);
             throw new Exception('User not found');
         }
 
         if (!Hash::check($password, $user->password)) {
+            \Log::error('Invalid password', ['email' => $email]);
             throw new Exception('Invalid password');
         }
 
-        // Generate a token string
-        $token = Str::random(60);
+        // Tạo token với Sanctum
+        $token = $user->createToken('auth-token')->plainTextToken;
 
-        // Return user and token
+        \Log::info('Login successful', ['role' => $role, 'email' => $email]);
         return ['user' => $user, 'token' => $token];
     }
 }

@@ -4,9 +4,15 @@
 namespace App\Repositories;
 
 use App\Models\CourseGoal;
+use App\Repositories\BaseRepository;
 
-class CourseGoalRepository
+class CourseGoalRepository extends BaseRepository
 {
+    public function __construct(CourseGoal $model)
+    {
+        parent::__construct($model);
+    }
+
     public function getByCourseStudentId($courseStudentId)
     {
         try {
