@@ -5,8 +5,6 @@ use App\Repositories\JournalSelfRepository;
 class JournalSelfService
 {
     protected $journalSelfRepo;
-
-
     public function __construct(JournalSelfRepository $journalSelfRepo)
     {
         $this->journalSelfRepo = $journalSelfRepo;
@@ -22,7 +20,7 @@ class JournalSelfService
     }
     public function create(array $data)
     {
-        // Nếu cần logic xử lý gì thì thêm ở đây
+       
         return $this->journalSelfRepo->create($data);
     }
     public function update($id, array $data)
