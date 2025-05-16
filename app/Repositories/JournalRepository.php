@@ -8,6 +8,7 @@ class JournalRepository extends Repository{
     public function getJournalsDetailByCourseStudentId(int $id){
         $journals = Journal::where('course_student_id', $id)
         ->with(['journalClasses', 'journalSelfs', 'journalGoals'])
+        ->with("course_student.student.class.class_teachers.teacher")
         ->get();
         return response()->json($journals);
     }

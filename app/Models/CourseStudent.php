@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Journal;
 use App\Models\Coursel;
 use App\Models\Student;
+use App\Models\Classes;
 
 class CourseStudent extends Model
 {
@@ -23,4 +24,5 @@ class CourseStudent extends Model
     public function student(){
         return $this->belongsTo(Student::class, 'student_id');
     }
+    
 }
