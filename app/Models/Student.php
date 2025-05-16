@@ -1,27 +1,27 @@
 <?php
-
 namespace App\Models;
-use App\Models\CourseStudent;
-use App\Models\Course;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-class Student extends Model
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Student extends Authenticatable
 {
-    use HasFactory; 
-    protected $table = "students";
+    use HasApiTokens, Notifiable;
+
     protected $fillable = [
-        'name',
-        'day_of_birth',
-        'gender',
-        'hometown',
-        'phone_number',
+        'teacher_name',
         'email',
         'password',
+        'phone_number',
+        'hometown',
+        'day_of_birth',
+        'gender',
         'class_id',
     ];
-    public function courses (){
-        return $this->belongsToMany(Course::class,'course_students')
-        ->using(CourseStudent::class)
-        ->withTimeStamps();
-    }
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 }
