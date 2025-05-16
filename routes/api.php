@@ -6,6 +6,9 @@
     use App\Http\Controllers\CourseGoalController;
     use App\Http\Controllers\JournalController;
     use App\Http\Controllers\StudentProfileController;
+    use App\Http\Controllers\MessageController;
+    use App\Http\Controllers\CourseController;
+use App\Http\Middleware\AuthMiddleware;
 
     // Route không yêu cầu xác thực
     // Comment out or remove this line temporarily to fix missing StudentProfileController error
@@ -25,3 +28,9 @@
     Route::get('/user', function (Request $request) {
         return $request->user();
     })->middleware('auth:sanctum');
+    Route::group(['prefix'=>'message'],function(){
+        Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
+    });
+    Route::group(['prefix'=>'course'],function(){
+        Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
+    });

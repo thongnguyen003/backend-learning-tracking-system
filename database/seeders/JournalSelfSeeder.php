@@ -12,6 +12,6 @@ class JournalSelfSeeder extends Seeder
      */
     public function run(): void
     {
-         JournalSelf::factory()->count(5)->create();
+         JournalSelf::factory()->count(3)->create();
     }
 }
