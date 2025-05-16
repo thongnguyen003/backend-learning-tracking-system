@@ -11,6 +11,7 @@ use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -19,7 +20,6 @@ Route::group(['prefix'=>'course'],function(){
 });
 Route::apiResource('students', StudentProfileController::class);
 
-// Route::middleware('auth:api')->post('/student/change-password', [StudentController::class, 'changePassword']);
 Route::put('/student/change-password/{id}', [StudentController::class, 'changePassword']);
 Route::post('/login', [AuthController::class, 'login'])->middleware(AuthMiddleware::class);
 Route::get('course-goals/{courseStudentId}', [CourseGoalController::class, 'indexByStudent']);
