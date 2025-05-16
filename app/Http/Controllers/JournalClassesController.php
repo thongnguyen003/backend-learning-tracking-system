@@ -1,9 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
-
 use Illuminate\Http\Request;
 use App\Services\JournalClassesService;
 class JournalClassesController extends Controller
@@ -16,8 +13,6 @@ class JournalClassesController extends Controller
     {
         return response()->json($this->service->getAll());
     }
-
-
     public function show(string $id)
     {
         return response()->json($this->service->getById($id));
@@ -39,7 +34,6 @@ class JournalClassesController extends Controller
 
     }
 
-
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
@@ -54,8 +48,6 @@ class JournalClassesController extends Controller
         ]);
         return response()->json($this->service->update($id, $data));
     }
-
-
     public function destroy(string $id)
     {
         $this->service->delete($id);
@@ -64,6 +56,3 @@ class JournalClassesController extends Controller
         ]);
     }
 }
-
-
-
