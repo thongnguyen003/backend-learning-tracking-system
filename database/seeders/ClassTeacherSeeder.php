@@ -13,6 +13,6 @@ class ClassTeacherSeeder extends Seeder
      */
     public function run(): void
     {
-        ClassTeacher::factory()->count(5)->create();
+        ClassTeacher::factory()->count(3)->create();
     }
 }

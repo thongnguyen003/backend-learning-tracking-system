@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\CourseService;
-use Illuminate\Support\Facades\Response;
-class CourseController extends Controller
+use App\Services\MessageService;
+class MessageController extends Controller
 {
+    protected $service;
+    public function __construct(MessageService $service){
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      */
-    protected $service;
-    public function __construct(CourseService $service){
-        $this->service = $service;
-    }
     public function index()
     {
         //
@@ -26,7 +25,9 @@ class CourseController extends Controller
     {
         //
     }
-
+    public function getMessageDetailByJournalGoalId($id){
+        return $this->service->getMessageDetailByJournalGoalId($id);
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -41,10 +42,6 @@ class CourseController extends Controller
     public function show(string $id)
     {
         //
-    }
-    public function getCourseByStudentId($id){
-        $result = $this->service->getCoursesDetailsByStudentId($id);
-        return response()->json($result);
     }
 
     /**
