@@ -31,7 +31,23 @@ class DetailMessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $message_id = $request->input('message_id');
+        $student_id = $request->input('student_id');
+        $teacher_id = $request->input('teacher_id');
+        $content = $request->input('content');
+        try {
+            
+            $this->service->store($message_id,$student_id,$teacher_id,$content);
+
+            return response()->json([
+                'message' => 'Add detail message successful',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Add detail message failed: ' . $e->getMessage()
+            ], 401);
+        }
     }
 
     /**

@@ -8,7 +8,10 @@
     use App\Http\Controllers\StudentProfileController;
     use App\Http\Controllers\MessageController;
     use App\Http\Controllers\CourseController;
-    use App\Http\Middleware\AuthMiddleware;
+    use App\Http\Controllers\DetailMessageController;
+    use App\Http\Controllers\api\TeacherController;
+use App\Http\Middleware\AuthMiddleware;
+
     use App\Http\Controllers\JournalClassesController;
     use App\Http\Controllers\JournalSelfController;
     
@@ -32,10 +35,20 @@
     })->middleware('auth:sanctum');
     Route::group(['prefix'=>'message'],function(){
         Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
+        Route::get('/getByJournalClass/{id}',[MessageController::class,'getMessageDetailByJournalClassId']);
+        Route::get('/getByJournalSelf/{id}',[MessageController::class,'getMessageDetailByJournalSelfId']);
+        Route::post('/detail',[DetailMessageController::class,'store']);
+        Route::post('/',[MessageController::class,'store']);
+        Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
     });
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     });
+
+    Route::get('/teachers', [TeacherController::class, 'index']);
+Route::get('/student/{id}', [StudentController::class, 'show']);
+Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
+
     Route::prefix('journal-classes')->group(function () {
         Route::get('/', [JournalClassesController::class, 'index']);      
         Route::get('/{id}', [JournalClassesController::class, 'show']);  
