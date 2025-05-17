@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseGoalController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalController;
+use App\Http\Controllers\JournalGoalController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -24,3 +25,10 @@ Route::get('course-goals/{courseStudentId}', [CourseGoalController::class, 'inde
 Route::group(['prefix'=>'journal'],function(){
     Route::get('/getByCourseStudentId/{id}',[JournalController::class,'getJournalsByCourseStudentId']);
 });
+
+Route::get('/journal-goals', [JournalGoalController::class, 'index']);
+Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
+Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
+Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
+Route::post('/journal-goals', [JournalGoalController::class, 'store']);
+
