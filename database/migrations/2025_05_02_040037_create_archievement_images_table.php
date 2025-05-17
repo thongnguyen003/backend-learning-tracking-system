@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->String('link',225);
             $table->unsignedBigInteger('archievement_id');
-            $table->foreign('archievement_id')->references('id')->on('achievements')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('archievement_id')->references('id')->on('archievements')->onDelete('cascade');
             $table->timestamps();
         });
     }

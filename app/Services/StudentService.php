@@ -38,4 +38,3 @@ class StudentService
         return $this->studentRepository->update($id, $data);
     }
 }
-
