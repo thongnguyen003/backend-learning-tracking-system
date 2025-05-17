@@ -28,12 +28,20 @@ class MessageController extends Controller
     public function getMessageDetailByJournalGoalId($id){
         return $this->service->getMessageDetailByJournalGoalId($id);
     }
+<<<<<<< HEAD
+    
+    public function getMessageDetailByCourseGoalId($id){
+        return $this->service->getMessageDetailByCourseGoalId($id);
+    }
+    
+=======
     public function getMessageDetailByJournalClassId($id){
         return $this->service->getMessageDetailByJournalClassId($id);
     }
     public function getMessageDetailByJournalSelfId($id){
         return $this->service->getMessageDetailByJournalSelfId($id);
     }
+>>>>>>> a7b10a2a5c0f04210d1091c4f44e92f35c456537
     /**
      * Store a newly created resource in storage.
      */

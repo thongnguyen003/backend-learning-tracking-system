@@ -8,6 +8,7 @@ use App\Models\Journal;
 use App\Models\Coursel;
 use App\Models\Student;
 use App\Models\Classes;
+use App\Models\CourseGoal;
 
 class CourseStudent extends Model
 {
@@ -25,4 +26,7 @@ class CourseStudent extends Model
         return $this->belongsTo(Student::class, 'student_id');
     }
     
+    public function course_goals (){
+        return $this->hasMany(CourseGoal::class,'course_student_id');
+    }
 }

@@ -9,6 +9,7 @@
     use App\Http\Controllers\MessageController;
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\DetailMessageController;
+    use App\Http\Controllers\api\TeacherController;
 use App\Http\Middleware\AuthMiddleware;
 
     // Route không yêu cầu xác thực
@@ -35,7 +36,12 @@ use App\Http\Middleware\AuthMiddleware;
         Route::get('/getByJournalSelf/{id}',[MessageController::class,'getMessageDetailByJournalSelfId']);
         Route::post('/detail',[DetailMessageController::class,'store']);
         Route::post('/',[MessageController::class,'store']);
+        Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
     });
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     });
+
+    Route::get('/teachers', [TeacherController::class, 'index']);
+Route::get('/student/{id}', [StudentController::class, 'show']);
+Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);

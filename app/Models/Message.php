@@ -4,9 +4,14 @@ namespace App\Models;
 use App\Models\DetailMessage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+<<<<<<< HEAD
+use App\Models\CourseGoal;
+
+=======
 use App\Models\JournalGoal;
 use App\Models\JournalClasses;
 use App\Models\JournalSelf;
+>>>>>>> a7b10a2a5c0f04210d1091c4f44e92f35c456537
 class Message extends Model
 {
      use HasFactory;
@@ -14,6 +19,11 @@ class Message extends Model
      public function detail_messages (){
         return $this->hasMany(DetailMessage::class,'message_id');
     }
+<<<<<<< HEAD
+
+    public function course_goal (){
+        return $this->belongsTo(CourseGoal::class,'course_goal_id');
+=======
     public function journal_goal (){
         return $this->belongsTo(JournalGoal::class,'journal_goal_id');
     }
@@ -22,5 +32,6 @@ class Message extends Model
     }
     public function journal_self(){
         return $this->belongsTo(JournalSelf::class,'journal_self_id');
+>>>>>>> a7b10a2a5c0f04210d1091c4f44e92f35c456537
     }
 }
