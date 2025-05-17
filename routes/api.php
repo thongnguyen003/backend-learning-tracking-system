@@ -8,6 +8,7 @@
     use App\Http\Controllers\StudentProfileController;
     use App\Http\Controllers\MessageController;
     use App\Http\Controllers\CourseController;
+    use App\Http\Controllers\DetailMessageController;
     use App\Http\Controllers\api\TeacherController;
 use App\Http\Middleware\AuthMiddleware;
 
@@ -31,6 +32,10 @@ use App\Http\Middleware\AuthMiddleware;
     })->middleware('auth:sanctum');
     Route::group(['prefix'=>'message'],function(){
         Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
+        Route::get('/getByJournalClass/{id}',[MessageController::class,'getMessageDetailByJournalClassId']);
+        Route::get('/getByJournalSelf/{id}',[MessageController::class,'getMessageDetailByJournalSelfId']);
+        Route::post('/detail',[DetailMessageController::class,'store']);
+        Route::post('/',[MessageController::class,'store']);
         Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
     });
     Route::group(['prefix'=>'course'],function(){
