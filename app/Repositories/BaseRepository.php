@@ -32,11 +32,12 @@ class BaseRepository {
         return null;
     }
 
-    public function delete(int $id): bool {
+    public function delete(int $id) {
         $record = $this->find($id);
         if ($record) {
             return $record->delete();
         }
         return false;
     }
+    public function updateMessage(array $data, int $id){}
 }
