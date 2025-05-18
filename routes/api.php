@@ -10,6 +10,8 @@
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\DetailMessageController;
     use App\Http\Controllers\api\TeacherController;
+    use App\Http\Controllers\JournalGoalController;
+    
 use App\Http\Middleware\AuthMiddleware;
 
     // Route không yêu cầu xác thực
