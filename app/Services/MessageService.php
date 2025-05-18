@@ -12,11 +12,10 @@ class MessageService extends Service {
     public function getMessageDetailByJournalGoalId($id){
         return $this->repository->getMessageDetailByJournalGoalId($id);
     }
-<<<<<<< HEAD
 
     public function getMessageDetailByCourseGoalId($id){
         return $this->repository->getMessageDetailByCourseGoalId($id);
-=======
+    }
     public function getMessageDetailByJournalClassId($id){
         return $this->repository->getMessageDetailByJournalClassId($id);
     }
@@ -33,6 +32,5 @@ class MessageService extends Service {
             $detail = $detailMessage->addDetailMessage($message_id,$student_id,$teacher_id,$content);
         }
         
->>>>>>> a7b10a2a5c0f04210d1091c4f44e92f35c456537
     }
 }

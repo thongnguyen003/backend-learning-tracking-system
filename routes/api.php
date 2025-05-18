@@ -37,11 +37,11 @@ use App\Http\Middleware\AuthMiddleware;
         Route::post('/detail',[DetailMessageController::class,'store']);
         Route::post('/',[MessageController::class,'store']);
         Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
+
     });
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     });
 
-    Route::get('/teachers', [TeacherController::class, 'index']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
