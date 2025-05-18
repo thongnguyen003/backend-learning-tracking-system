@@ -1,19 +1,19 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Student;
-use App\Models\Teacher;
+use App\Models\User;
 
 class AuthRepository
 {
-    public function getUserByRoleAndEmail($role, $email)
-    {
-        if ($role === 'student') {
-            return Student::where('email', $email)->first();
-        } elseif ($role === 'teacher') {
-            return Teacher::where('email', $email)->first();
-        }
+    protected User $userModel;
 
-        return null;
+    public function __construct(User $userModel)
+    {
+        $this->userModel = $userModel;
+    }
+
+    public function getUserByEmail($email)
+    {
+        return $this->userModel->where('email', $email)->first();
     }
 }

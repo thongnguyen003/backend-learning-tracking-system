@@ -12,11 +12,10 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Bind CourseGoalRepositoryInterface to CourseGoalRepository
-        $this->app->bind(CourseGoalRepositoryInterface::class, CourseGoalRepository::class);
-
-        // Bind JournalGoalRepositoryInterface to JournalGoalRepository
-        $this->app->bind(JournalGoalRepositoryInterface::class, JournalGoalRepository::class);
+        // Nếu có interface thì bind interface → implementation
+        $this->app->bind(CourseGoalRepository::class, function ($app) {
+            return new CourseGoalRepository($app->make(\App\Models\CourseGoal::class));
+        });
     }
 
     public function boot(): void
