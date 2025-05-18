@@ -24,4 +24,15 @@ class JournalGoalRepository implements JournalGoalRepositoryInterface
     {
         return JournalGoal::destroy($id);
     }
+
+public function update($id, array $data)
+{
+    $goal = JournalGoal::find($id);
+    if ($goal) {
+        $goal->fill($data); // Fill model with data
+        $goal->save(); // Save the updated model
+        return $goal;
+    }
+    return null;
+}
 }

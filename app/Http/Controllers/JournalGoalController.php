@@ -36,6 +36,27 @@ class JournalGoalController extends Controller
         $goal = $this->service->createGoal($validated);
         return response()->json($goal, 201);
     }
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'journal_id' => 'required|integer',
+            'title' => 'nullable|string',
+            'state' => 'integer',
+            'date' => 'nullable|date',
+        ]);
+
+        \Log::info('Updating goal with data: ', $validated); // Log the data
+
+        // Check if the goal exists
+        $goal = $this->service->getGoalById($id);
+        if (!$goal) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
+        // Update the goal
+        $updatedGoal = $this->service->updateGoal($id, $validated);
+        return response()->json($updatedGoal);
+    }
 
     public function destroy($id)
     {

@@ -28,7 +28,7 @@ Route::group(['prefix'=>'journal'],function(){
 
 Route::get('/journal-goals', [JournalGoalController::class, 'index']);
 Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
+Route::post('/journal-goals', [JournalGoalController::class, 'store']);
 Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
 Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
-Route::post('/journal-goals', [JournalGoalController::class, 'store']);
 

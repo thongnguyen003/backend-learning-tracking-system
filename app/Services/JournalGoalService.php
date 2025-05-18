@@ -31,4 +31,8 @@ class JournalGoalService
     {
         return $this->repository->delete($id);
     }
+    public function updateGoal($id, array $data)
+    {
+        return $this->repository->update($id, $data);
+    }
 }
