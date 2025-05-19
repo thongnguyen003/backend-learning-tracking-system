@@ -1,4 +1,4 @@
-    <?php
+<?php
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\AuthController;
@@ -10,6 +10,8 @@
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\DetailMessageController;
     use App\Http\Controllers\api\TeacherController;
+    use App\Http\Controllers\JournalGoalController;
+    
 use App\Http\Middleware\AuthMiddleware;
 
     // Route không yêu cầu xác thực
@@ -49,3 +51,9 @@ use App\Http\Middleware\AuthMiddleware;
 
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
+Route::get('/journal-goals', [JournalGoalController::class, 'index']);
+Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
+Route::post('/journal-goals', [JournalGoalController::class, 'store']);
+Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
+Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
+
