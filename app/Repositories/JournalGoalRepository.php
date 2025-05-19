@@ -3,7 +3,7 @@ namespace App\Repositories;
 
 use App\Models\JournalGoal;
 
-class JournalGoalRepository implements JournalGoalRepositoryInterface
+class JournalGoalRepository
 {
     public function all()
     {

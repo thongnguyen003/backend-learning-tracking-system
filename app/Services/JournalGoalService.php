@@ -1,13 +1,13 @@
 <?php
 namespace App\Services;
 
-use App\Repositories\JournalGoalRepositoryInterface;
+use App\Repositories\JournalGoalRepository;
 
 class JournalGoalService
 {
     protected $repository;
 
-    public function __construct(JournalGoalRepositoryInterface $repository)
+    public function __construct(JournalGoalRepository $repository)
     {
         $this->repository = $repository;
     }

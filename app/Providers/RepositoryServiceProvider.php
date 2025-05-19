@@ -10,13 +10,12 @@ use App\Repositories\JournalGoalRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        // Nếu có interface thì bind interface → implementation
-        $this->app->bind(CourseGoalRepository::class, function ($app) {
-            return new CourseGoalRepository($app->make(\App\Models\CourseGoal::class));
-        });
-    }
+public function register(): void
+{
+
+
+}
+
 
     public function boot(): void
     {
