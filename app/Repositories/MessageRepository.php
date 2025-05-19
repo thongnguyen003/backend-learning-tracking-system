@@ -84,15 +84,25 @@ class MessageRepository  extends BaseRepository
     
 
     public function getMessageDetailByCourseGoalId($id){
-        $result =  $this->model::where('course_goal_id',$id)
+        $data =  $this->model::where('journal_self_id',$id)
         ->with(['detail_messages' => function ($query) {
         $query->whereNotNull('student_id')
               ->orWhereNotNull('teacher_id') 
               ->with(['student', 'teacher']);
-
         }])
-        ->with("course_goal.course_student.student.class.class_teachers.teacher")
         ->get();
+        $teacher =  $this->model::where('journal_self_id', $id)
+        ->with("journal_goal.journal.course_student.student.class.class_teachers.teacher")
+        ->first();
+        if ($teacher && $teacher->journal_goal) {
+            $teacherData = $teacher->journal_goal->journal
+                ->course_student->student->class
+                ->class_teachers;
+        } else {
+            $teacherData = null; 
+        }
+        $result = ['teacher'=>$teacherData,'message'=>$data];
+        
         return response()->json($result);
     }
     public function delete (int $id):bool{
