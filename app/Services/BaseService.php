@@ -28,7 +28,7 @@ class BaseService {
         return $this->repository->update($id, $data);
     }
 
-    public function delete(int $id): bool {
+    public function delete(int $id) {
         return $this->repository->delete($id);
     }
 }

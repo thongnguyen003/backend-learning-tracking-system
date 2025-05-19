@@ -15,6 +15,8 @@ class Message extends Model
      public function detail_messages (){
         return $this->hasMany(DetailMessage::class,'message_id');
     }
+
+
     public function course_goal (){
         return $this->belongsTo(CourseGoal::class,'course_goal_id');
     }

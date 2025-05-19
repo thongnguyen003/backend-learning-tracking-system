@@ -34,7 +34,11 @@ use App\Http\Middleware\AuthMiddleware;
         Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
         Route::get('/getByJournalClass/{id}',[MessageController::class,'getMessageDetailByJournalClassId']);
         Route::get('/getByJournalSelf/{id}',[MessageController::class,'getMessageDetailByJournalSelfId']);
-        Route::post('/detail',[DetailMessageController::class,'store']);
+        Route::group(['prefix'=>'detail'],function(){
+            Route::post('/',[DetailMessageController::class,'store']);
+            Route::delete('/{id}',[DetailMessageController::class,'destroy']);
+            Route::put('/{id}',[DetailMessageController::class,'update']);
+        });
         Route::post('/',[MessageController::class,'store']);
         Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
 

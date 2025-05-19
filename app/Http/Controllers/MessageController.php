@@ -28,11 +28,12 @@ class MessageController extends Controller
     public function getMessageDetailByJournalGoalId($id){
         return $this->service->getMessageDetailByJournalGoalId($id);
     }
-    
+
     public function getMessageDetailByCourseGoalId($id){
         return $this->service->getMessageDetailByCourseGoalId($id);
     }
     
+
     public function getMessageDetailByJournalClassId($id){
         return $this->service->getMessageDetailByJournalClassId($id);
     }
@@ -93,8 +94,8 @@ class MessageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $this->service->delete($id);
     }
 }
