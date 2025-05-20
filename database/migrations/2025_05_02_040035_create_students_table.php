@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('teacher_name', 50); 
+            $table->string('student_name', 50); 
             $table->date('day_of_birth')->nullable();
             $table->enum('gender', ['male', 'female', 'other']);
             $table->string('hometown', 255)->nullable();

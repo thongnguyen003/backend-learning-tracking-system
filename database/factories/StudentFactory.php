@@ -19,7 +19,7 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name, // Tên ngẫu nhiên
+            'student_name' => $this->faker->name, // Tên ngẫu nhiên
             'day_of_birth' => $this->faker->optional()->date('Y-m-d', '-18 years'), // Ngày sinh cách đây ít nhất 18 năm
             'gender' => $this->faker->randomElement(['male', 'female', 'other']), // Giới tính ngẫu nhiên
             'hometown' => $this->faker->optional()->city, // Quê quán ngẫu nhiên

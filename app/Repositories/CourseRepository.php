@@ -15,7 +15,7 @@ class CourseRepository extends Repository {
         }])
         ->withCount('students')
         ->with(['courseStudents' => function($query2) {
-            $query2->select('id', 'course_students.course_id', 'course_students.student_id'); // Thêm khóa course_student_id vào đây
+            $query2->select('id', 'course_students.course_id', 'course_students.student_id');
         }])
         ->get();
         if ($courses->isEmpty()) {

@@ -21,17 +21,29 @@ class AuthController extends Controller
         $password = $request->input('password');
 
         try {
-            $user = $this->authService->login($role, $email, $password);
+            if (!in_array($role, ['student', 'teacher', 'web'])) {
+                throw new Exception('Invalid role');
+            }
+
+            $result = $this->authService->login($role, $email, $password);
+            $user = $result['user'];
 
             return response()->json([
                 'message' => 'Login successful',
                 'role' => $role,
-                'user' => $user
+                'user' => $user->only(['id', 'email', 'name']),
+                'token' => $result['token'],
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Login failed: ' . $e->getMessage()
             ], 401);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logout successful']);
     }
 }
