@@ -38,10 +38,11 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    // public function show(string $id)
-    // {
-    //     //
-    // }
+    public function show(int $id)
+    {
+        $student = $this->studentService->findById($id);
+        return response()->json($student);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -108,24 +109,28 @@ class StudentController extends Controller
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
-   public function updateProfile(Request $request, $id)
-    {
-        $data = $request->validate([
-            'student_name' => 'required|string|max:50',
-            'day_of_birth' => 'nullable|date',
-            'gender' => 'required|in:male,female,other',
-            'hometown' => 'nullable|string|max:255',
-            'phone_number' => 'nullable|string|max:255',
-            'email' => 'required|email|max:255',
-            'password' => 'required|string|min:6',
-            'class_id' => 'required|exists:classes,id',
-        ]);
+  public function updateProfile(Request $request, $id)
+{
+    $data = $request->validate([
+        'student_name' => 'required|string|max:50',
+        'day_of_birth' => 'nullable|date',
+        'gender' => 'required|in:male,female,other',
+        'hometown' => 'nullable|string|max:255',
+        'phone_number' => 'nullable|string|max:255',
+        'email' => 'required|email|max:255',
+        'password' => 'nullable|string|min:6', // Cho phép nullable
+        'class_id' => 'required|exists:classes,id',
+    ]);
 
-        try {
-            $student = $this->studentService->updateStudentProfile($id, $data);
-            return response()->json(['message' => 'Student profile updated successfully', 'data' => $student], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+    try {
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']); // Hash mật khẩu
         }
+        $student = $this->studentService->updateStudentProfile($id, $data);
+        return response()->json(['message' => 'Student profile updated successfully', 'data' => $student], 200);
+    } catch (\Exception $e) {
+        return response()->json(['message' => $e->getMessage()], 500);
     }
+}
+
 }

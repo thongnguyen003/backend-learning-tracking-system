@@ -1,4 +1,4 @@
-    <?php
+<?php
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\AuthController;
@@ -10,6 +10,8 @@
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\DetailMessageController;
     use App\Http\Controllers\api\TeacherController;
+    use App\Http\Controllers\JournalGoalController;
+    
 use App\Http\Middleware\AuthMiddleware;
 
     use App\Http\Controllers\JournalClassesController;
@@ -37,17 +39,26 @@ use App\Http\Middleware\AuthMiddleware;
         Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
         Route::get('/getByJournalClass/{id}',[MessageController::class,'getMessageDetailByJournalClassId']);
         Route::get('/getByJournalSelf/{id}',[MessageController::class,'getMessageDetailByJournalSelfId']);
-        Route::post('/detail',[DetailMessageController::class,'store']);
+        Route::group(['prefix'=>'detail'],function(){
+            Route::post('/',[DetailMessageController::class,'store']);
+            Route::delete('/{id}',[DetailMessageController::class,'destroy']);
+            Route::put('/{id}',[DetailMessageController::class,'update']);
+        });
         Route::post('/',[MessageController::class,'store']);
         Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
+
     });
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     });
-
     Route::get('/teachers', [TeacherController::class, 'index']);
     Route::get('/student/{id}', [StudentController::class, 'show']);
     Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
+    Route::get('/journal-goals', [JournalGoalController::class, 'index']);
+    Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
+    Route::post('/journal-goals', [JournalGoalController::class, 'store']);
+    Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
+    Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
 
     Route::prefix('journal/journal-classes')->group(function () {
         Route::get('/', [JournalClassesController::class, 'index']);      

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('course_goals', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('course_student_id');
-            $table->unsignedBigInteger('message_id')->nullable();
             $table->text('content')->nullable();
             $table->string('state')->default('good');
             $table->dateTime('date');
