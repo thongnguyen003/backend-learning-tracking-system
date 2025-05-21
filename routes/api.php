@@ -46,17 +46,17 @@ use App\Http\Middleware\AuthMiddleware;
     });
 
     Route::get('/teachers', [TeacherController::class, 'index']);
-Route::get('/student/{id}', [StudentController::class, 'show']);
-Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
+    Route::get('/student/{id}', [StudentController::class, 'show']);
+    Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
 
-    Route::prefix('journal-classes')->group(function () {
+    Route::prefix('journal/journal-classes')->group(function () {
         Route::get('/', [JournalClassesController::class, 'index']);      
         Route::get('/{id}', [JournalClassesController::class, 'show']);  
         Route::post('/', [JournalClassesController::class, 'store']);    
         Route::put('/{id}', [JournalClassesController::class, 'update']);
         Route::delete('/{id}', [JournalClassesController::class, 'destroy']);
     });
-    Route::prefix('journal-selfs')->group(function () {
+    Route::prefix('journal/journal-selfs')->group(function () {
         Route::get('/', [JournalSelfController::class, 'index']);
         Route::get('/{id}', [JournalSelfController::class, 'show']);
         Route::post('/', [JournalSelfController::class, 'store']);

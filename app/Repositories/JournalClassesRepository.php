@@ -10,8 +10,8 @@
             return JournalClasses::findOrFail($id);
         }
         public function create(array $data){
-            return JournalClasses::created($data);
-        }
+            return JournalClasses::create($data);
+        }   
         public function update($id, array $data){
             $item = $this->findById($id);
             $item->update($data);

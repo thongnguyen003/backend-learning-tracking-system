@@ -34,14 +34,14 @@ class JournalSelfController extends Controller
     {
         $data = $request->validate([
             'journal_id' => 'required|exists:journals,id',
-            'date' => 'required|date',
+            'date' => 'required',
             'topic' => 'required|string',
             'description' => 'required|string',
             'duration' => 'required',
             'resources' => 'required|string',
             'activity' => 'required|string',
-            'concentration' => 'required|boolean',
-            'follow_plan' => 'required|boolean',
+            'concentration' => 'required',
+            'follow_plan' => 'required',
             'evaluation' => 'required|string',
             'reinforcing_learning' => 'required|string',
             'notes' => 'nullable|string',
@@ -56,17 +56,17 @@ class JournalSelfController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'journal_id' => 'sometimes|exists:journals,id',
-            'date' => 'sometimes|date',
-            'topic' => 'sometimes|string',
-            'description' => 'sometimes|string',
-            'duration' => 'sometimes',
-            'resources' => 'sometimes|string',
-            'activity' => 'sometimes|string',
-            'concentration' => 'sometimes|boolean',
-            'follow_plan' => 'sometimes|boolean',
-            'evaluation' => 'sometimes|string',
-            'reinforcing_learning' => 'sometimes|string',
+            'journal_id' => 'required|exists:journals,id',
+            'date' => 'required',
+            'topic' => 'required|string',
+            'description' => 'required|string',
+            'duration' => 'required',
+            'resources' => 'required|string',
+            'activity' => 'required|string',
+            'concentration' => 'required',
+            'follow_plan' => 'required',
+            'evaluation' => 'required|string',
+            'reinforcing_learning' => 'required|string',
             'notes' => 'nullable|string',
         ]);
 

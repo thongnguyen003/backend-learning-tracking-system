@@ -3,8 +3,8 @@
     use App\Repositories\JournalClassesRepository;
     class JournalClassesService{
         protected $repository;
-        public function __construct(JournalClassesRepository $reponsitory){
-            $this->repository = $reponsitory;
+        public function __construct(JournalClassesRepository $repository){
+            $this->repository = $repository;
         }
 
         public function getAll(){

@@ -24,28 +24,28 @@ class JournalClassesController extends Controller
             'date' => 'required|date',
             'topic' => 'required|string',
             'description' => 'required|string',
-            'assessment' => 'required|integer',
+            'assessment' => 'required',
             'difficulty' => 'required|string',
             'plan' => 'required|string',
             'solution' => 'required|string',
         ]);
         return response()->json($this->service->create($data), 201);
 
-
     }
 
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
-            'journal_id' => 'sometimes|exists:journals,id',
-            'date' => 'sometimes|date',
-            'topic' => 'sometimes|string',
-            'description' => 'sometimes|string',
-            'assessment' => 'sometimes|integer',
-            'difficulty' => 'sometimes|string',
-            'plan' => 'sometimes|string',
-            'solution' => 'sometimes|string',
+            'journal_id' => 'required|exists:journals,id',
+            'date' => 'required|date',
+            'topic' => 'required|string',
+            'description' => 'required|string',
+            'assessment' => 'required',
+            'difficulty' => 'required|string',
+            'plan' => 'required|string',
+            'solution' => 'required|string',
         ]);
+        
         return response()->json($this->service->update($id, $data));
     }
     public function destroy(string $id)
