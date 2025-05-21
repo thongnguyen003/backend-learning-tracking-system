@@ -29,6 +29,7 @@ class MessageController extends Controller
         return $this->service->getMessageDetailByJournalGoalId($id);
     }
 
+
     public function getMessageDetailByCourseGoalId($id){
         return $this->service->getMessageDetailByCourseGoalId($id);
     }
