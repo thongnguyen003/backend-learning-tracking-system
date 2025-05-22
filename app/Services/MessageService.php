@@ -31,7 +31,7 @@ class MessageService extends BaseService {
             $messageUser->addMessageUser($message_id,$view_teacher_id);
             $detail = $detailMessage->addDetailMessage($message_id,$student_id,$teacher_id,$content);
         }
-        
+
     }
     public function delete(int $id):bool{
         parent::delete($id);

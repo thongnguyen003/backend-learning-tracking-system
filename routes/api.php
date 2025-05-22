@@ -14,6 +14,9 @@
     
 use App\Http\Middleware\AuthMiddleware;
 
+    use App\Http\Controllers\JournalClassesController;
+    use App\Http\Controllers\JournalSelfController;
+    
     // Route không yêu cầu xác thực
     // Comment out or remove this line temporarily to fix missing StudentProfileController error
     // Route::apiResource('students', StudentProfileController::class);
@@ -47,13 +50,28 @@ use App\Http\Middleware\AuthMiddleware;
     });
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
+        Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
     });
+    Route::get('/teachers', [TeacherController::class, 'index']);
+    Route::get('/student/{id}', [StudentController::class, 'show']);
+    Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
+    Route::get('/journal-goals', [JournalGoalController::class, 'index']);
+    Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
+    Route::post('/journal-goals', [JournalGoalController::class, 'store']);
+    Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
+    Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
 
-Route::get('/student/{id}', [StudentController::class, 'show']);
-Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
-Route::get('/journal-goals', [JournalGoalController::class, 'index']);
-Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
-Route::post('/journal-goals', [JournalGoalController::class, 'store']);
-Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
-Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
-
+    Route::prefix('journal/journal-classes')->group(function () {
+        Route::get('/', [JournalClassesController::class, 'index']);      
+        Route::get('/{id}', [JournalClassesController::class, 'show']);  
+        Route::post('/', [JournalClassesController::class, 'store']);    
+        Route::put('/{id}', [JournalClassesController::class, 'update']);
+        Route::delete('/{id}', [JournalClassesController::class, 'destroy']);
+    });
+    Route::prefix('journal/journal-selfs')->group(function () {
+        Route::get('/', [JournalSelfController::class, 'index']);
+        Route::get('/{id}', [JournalSelfController::class, 'show']);
+        Route::post('/', [JournalSelfController::class, 'store']);
+        Route::put('/{id}', [JournalSelfController::class, 'update']);
+        Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
+    });
