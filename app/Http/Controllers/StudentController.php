@@ -10,7 +10,7 @@ use App\Models\Student;  // Import model Student
 use App\Services\StudentService;
 class StudentController extends Controller
 {
-    protected $studentService;
+    // protected $studentService;
     // public function changePassword(Request $request)
     // {
     //     // Lấy người dùng đã đăng nhập
@@ -31,26 +31,26 @@ class StudentController extends Controller
     //     $user->save();  // Lưu thay đổi vào cơ sở dữ liệu
 
     //     return response()->json(['message' => 'Mật khẩu đã được thay đổi thành công'], 200);
+    // // }
+    // public function __construct(StudentService $studentService)
+    // {
+    //     $this->studentService = $studentService;
     // }
-    public function __construct(StudentService $studentService)
-    {
-        $this->studentService = $studentService;
-    }
-    public function changePassword(Request $request, $id)
-    {
-        $id = (int) $id; // Lấy ID từ URL
-        $data = $request->all();
+    // public function changePassword(Request $request, $id)
+    // {
+    //     $id = (int) $id; // Lấy ID từ URL
+    //     $data = $request->all();
 
-        try {
-            if (!$id) {
-                return response()->json(['error' => 'Student ID is missing'], 400);
-            }
+    //     try {
+    //         if (!$id) {
+    //             return response()->json(['error' => 'Student ID is missing'], 400);
+    //         }
 
-            return $this->studentService->changePassword($id, $data);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
-        }
-    }
+    //         return $this->studentService->changePassword($id, $data);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => $e->getMessage()], 400);
+    //     }
+    // }
 
     protected $studentService;
     
