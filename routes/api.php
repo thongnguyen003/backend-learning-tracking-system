@@ -48,6 +48,7 @@ use App\Http\Middleware\AuthMiddleware;
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     });
+    Route::get('/students/class/{classId}', [StudentController::class, 'showStudentsByClassId']);
 
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
