@@ -55,6 +55,7 @@ use App\Http\Middleware\AuthMiddleware;
     });
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
+        Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
     });
 
 

@@ -24,5 +24,21 @@ class CourseRepository extends Repository {
     
         return response()->json($courses);
     }
+    public function getCoursesDetailsByClassId(int $classId){
+        $courses = Course::where('class_id',$classId)
+        ->with(['teacher'=>function($query1){
+            $query1->select( 'teachers.id','teacher_name');
+        }])
+        ->withCount('students')
+        ->with(['courseStudents' => function($query2) {
+            $query2->select('id', 'course_students.course_id', 'course_students.student_id');
+        }])
+        ->get();
+        if ($courses->isEmpty()) {
+            return response()->json(['message' => 'No courses found for the given student ID'], 404);
+        }
+    
+        return response()->json($courses);
+    }
     
 }
