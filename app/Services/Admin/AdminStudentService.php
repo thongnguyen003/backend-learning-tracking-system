@@ -2,65 +2,65 @@
 
 namespace App\Services\Admin;
 
-use App\Repositories\Admin\AdminStudentRepository;
-use App\Services\BaseService;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use App\Models\Student;
+use Illuminate\Support\Facades\Log;
 
-class AdminStudentService extends BaseService
+class AdminStudentService
 {
-    protected $studentRepository;
+    protected $model;
 
-    public function __construct(AdminStudentRepository $studentRepository)
+    public function __construct(Student $model)
     {
-        parent::__construct($studentRepository);
-        $this->studentRepository = $studentRepository;
+        $this->model = $model;
     }
 
-    public function getAll($search = ''): Collection
+    public function createMultiple(array $users)
     {
-        return $this->studentRepository->search($search);
-    }
-
-    public function create(array $data): Model
-    {
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
-        }
-        return $this->studentRepository->create($data);
-    }
-
-    public function createMultiple(array $users): array
-    {
-        $createdUsers = [];
+        $created = [];
         foreach ($users as $user) {
-            $createdUsers[] = $this->repository->create([
-                'name' => $user['name'],
+            Log::info('Creating student:', $user);
+            $createdUser = $this->model->create([
+                'student_name' => $user['name'],
                 'email' => $user['email'],
-                'password' => Hash::make($user['password']),
-                'role' => $user['role'],
-                'class_id' => $user['class_id'], // Thêm class_id
+                'password' => bcrypt($user['password']),
+                'class_id' => $user['class_id'],
+                'day_of_birth' => $user['day_of_birth'] ?? null,
+                'hometown' => $user['hometown'] ?? null,
+                'phone_number' => $user['phone_number'] ?? null,
             ]);
+            Log::info('Created student:', $createdUser->toArray());
+            $created[] = $createdUser;
         }
-        return $createdUsers;
+        return $created;
     }
 
-    public function getById($id): ?Model
+    public function getAll($search = '')
     {
-        return $this->studentRepository->findById($id);
+        return $this->model
+            ->where('student_name', 'like', "%$search%")
+            ->orWhere('email', 'like', "%$search%")
+            ->get();
     }
 
-    public function update($id, array $data): ?Model
+    public function getById($id)
     {
-        if (isset($data['password']) && !empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
+        return $this->model->find($id);
+    }
+
+    public function update($id, array $data)
+    {
+        $user = $this->model->find($id);
+        if ($user) {
+            $user->update($data);
         }
-        return $this->studentRepository->update($id, $data);
+        return $user;
     }
 
-    public function delete($id): bool
+    public function delete($id)
     {
-        return $this->studentRepository->delete($id);
+        $user = $this->model->find($id);
+        if ($user) {
+            $user->delete();
+        }
     }
 }

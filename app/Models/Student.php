@@ -17,7 +17,7 @@ class Student extends Authenticatable
     protected $fillable = [
         'student_name',
         'email',
-        'name',
+        'student_name',
         'password',
         'phone_number',
         'hometown',

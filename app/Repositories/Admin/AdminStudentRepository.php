@@ -16,7 +16,7 @@ class AdminStudentRepository extends BaseRepository
     public function search($search = ''): Collection
     {
         return $this->model
-            ->where('name', 'like', "%$search%")
+            ->where('student_name', 'like', "%$search%")
             ->orWhere('email', 'like', "%$search%")
             ->get();
     }

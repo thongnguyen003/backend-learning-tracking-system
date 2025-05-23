@@ -2,65 +2,64 @@
 
 namespace App\Services\Admin;
 
-use App\Repositories\Admin\AdminTeacherRepository;
-use App\Services\BaseService;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Log;
 
-class AdminTeacherService extends BaseService
+class AdminTeacherService
 {
-    protected $teacherRepository;
+    protected $model;
 
-    public function __construct(AdminTeacherRepository $teacherRepository)
+    public function __construct(Teacher $model)
     {
-        parent::__construct($teacherRepository);
-        $this->teacherRepository = $teacherRepository;
+        $this->model = $model;
     }
 
-    public function getAll($search = ''): Collection
+    public function createMultiple(array $users)
     {
-        return $this->teacherRepository->search($search);
-    }
-
-    public function create(array $data): Model
-    {
-        if (isset($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
+        $created = [];
+        foreach ($users as $user) {
+            Log::info('Creating teacher:', $user);
+            $createdUser = $this->model->create([
+                'teacher_name' => $user['teacher_name'],
+                'email' => $user['email'],
+                'password' => bcrypt($user['password']),
+                'day_of_birth' => $user['day_of_birth'] ?? null,
+                'hometown' => $user['hometown'] ?? null,
+                'phone_number' => $user['phone_number'] ?? null,
+            ]);
+            Log::info('Created teacher:', $createdUser->toArray());
+            $created[] = $createdUser;
         }
-        return $this->teacherRepository->create($data);
+        return $created;
     }
 
-    public function createMultiple(array $users): array
+    public function getAll($search = '')
     {
-        $createdUsers = [];
-        foreach ($users as $userData) {
-            if (!isset($userData['role']) || $userData['role'] !== 'teacher') {
-                continue;
-            }
-            if (isset($userData['password'])) {
-                $userData['password'] = Hash::make($userData['password']);
-            }
-            $createdUsers[] = $this->teacherRepository->create($userData);
+        return $this->model
+            ->where('teacher_name', 'like', "%$search%")
+            ->orWhere('email', 'like', "%$search%")
+            ->get();
+    }
+
+    public function getById($id)
+    {
+        return $this->model->find($id);
+    }
+
+    public function update($id, array $data)
+    {
+        $user = $this->model->find($id);
+        if ($user) {
+            $user->update($data);
         }
-        return $createdUsers;
+        return $user;
     }
 
-    public function getById($id): ?Model
+    public function delete($id)
     {
-        return $this->teacherRepository->findById($id);
-    }
-
-    public function update($id, array $data): ?Model
-    {
-        if (isset($data['password']) && !empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
+        $user = $this->model->find($id);
+        if ($user) {
+            $user->delete();
         }
-        return $this->teacherRepository->update($id, $data);
-    }
-
-    public function delete($id): bool
-    {
-        return $this->teacherRepository->delete($id);
     }
 }
