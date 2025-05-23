@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\CourseService;
-use Illuminate\Support\Facades\Response;
-class CourseController extends Controller
+use App\Services\AchievementService;
+
+class AchievementController extends Controller
 {
+    protected $service;
+    public function __construct(AchievementService $service){
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      */
-    protected $service;
-    public function __construct(CourseService $service){
-        $this->service = $service;
-    }
     public function index()
     {
         //
@@ -42,19 +42,9 @@ class CourseController extends Controller
     {
         //
     }
-    public function getCourseByStudentId($id){
-        $result = $this->service->getCoursesDetailsByStudentId($id);
-        return response()->json($result);
+    public function getByStudentId($studentId){
+        $this->service->getByStudentId($studentId);
     }
-    public function getCourseByClassId($id){
-        $result = $this->service->getCoursesDetailsByClassId($id);
-        return response()->json($result);
-    }
-    public function getCourseByCourseId($id){
-        $result = $this->service->getCoursesDetailsByCourseId($id);
-        return response()->json($result);
-    }
-
 
     /**
      * Show the form for editing the specified resource.
