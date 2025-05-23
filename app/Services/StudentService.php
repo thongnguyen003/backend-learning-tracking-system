@@ -32,4 +32,13 @@ class StudentService
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }
+
+    public function updateStudentProfile($id, $data)
+    {
+        return $this->studentRepository->update($id, $data);
+    }
+
+    public function findById(int $id){
+        return $this->studentRepository->findById($id);
+    }
 }

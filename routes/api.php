@@ -14,8 +14,14 @@ use App\Http\Controllers\Admin\AdminUserController;
     use App\Http\Controllers\MessageController;
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\DetailMessageController;
+    use App\Http\Controllers\api\TeacherController;
+    use App\Http\Controllers\JournalGoalController;
+    
 use App\Http\Middleware\AuthMiddleware;
 
+    use App\Http\Controllers\JournalClassesController;
+    use App\Http\Controllers\JournalSelfController;
+    
     // Route không yêu cầu xác thực
     // Comment out or remove this line temporarily to fix missing StudentProfileController error
     // Route::apiResource('students', StudentProfileController::class);
@@ -38,8 +44,14 @@ use App\Http\Middleware\AuthMiddleware;
         Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
         Route::get('/getByJournalClass/{id}',[MessageController::class,'getMessageDetailByJournalClassId']);
         Route::get('/getByJournalSelf/{id}',[MessageController::class,'getMessageDetailByJournalSelfId']);
-        Route::post('/detail',[DetailMessageController::class,'store']);
+        Route::group(['prefix'=>'detail'],function(){
+            Route::post('/',[DetailMessageController::class,'store']);
+            Route::delete('/{id}',[DetailMessageController::class,'destroy']);
+            Route::put('/{id}',[DetailMessageController::class,'update']);
+        });
         Route::post('/',[MessageController::class,'store']);
+        Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
+
     });
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);

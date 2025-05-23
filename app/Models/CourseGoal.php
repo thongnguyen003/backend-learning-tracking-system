@@ -3,6 +3,8 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\CourseStudent;
+use App\Models\Message;
 
 class CourseGoal extends Model
 {
@@ -16,4 +18,11 @@ class CourseGoal extends Model
     ];
     public $timestamps = false;
     
+    public function course_student (){
+        return $this->belongsTo(CourseStudent::class,'course_student_id');
+    }
+
+    public function messages (){
+        return $this->hasMany(Message::class,'course_goal_id');
+    }
 }
