@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\AdminUserController;
     use App\Http\Controllers\api\TeacherController;
     use App\Http\Controllers\JournalGoalController;
     
+    use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 
     use App\Http\Controllers\JournalClassesController;
@@ -75,3 +76,8 @@ use App\Http\Middleware\AuthMiddleware;
         // Delete a user
         Route::delete('users/{id}', [AdminUserController::class, 'deleteUser']);
     });
+
+    Route::get('/admin/classes', [ClassController::class, 'index']);
+    Route::post('/admin/create-classes', [ClassController::class, 'store']);
+Route::get('/student/{id}', [StudentController::class, 'show']);
+Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
