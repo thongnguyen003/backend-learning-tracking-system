@@ -12,4 +12,11 @@ class Classes extends Model
     public function class_teachers (){
         return $this->hasMany(ClassTeacher::class,'class_id');
     }
+    protected $fillable = [
+        'name',
+        'start_day',
+        'end_day',
+        'quantity',
+        'state',
+    ];
 }
