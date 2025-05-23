@@ -16,7 +16,6 @@ class Message extends Model
         return $this->hasMany(DetailMessage::class,'message_id');
     }
 
-
     public function course_goal (){
         return $this->belongsTo(CourseGoal::class,'course_goal_id');
     }
@@ -24,7 +23,7 @@ class Message extends Model
         return $this->belongsTo(JournalGoal::class,'journal_goal_id');
     }
     public function journal_class (){
-        return $this->belongsTo(JournalClass::class,'journal_class_id');
+        return $this->belongsTo(JournalClasses::class,'journal_class_id');
     }
     public function journal_self(){
         return $this->belongsTo(JournalSelf::class,'journal_self_id');

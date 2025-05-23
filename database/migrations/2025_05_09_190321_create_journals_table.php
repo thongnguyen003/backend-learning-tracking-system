@@ -17,7 +17,8 @@ return new class extends Migration
         $table->date('start_day'); 
         $table->date('end_day'); 
         $table->dateTime('open_date'); 
-        $table->dateTime('deadline'); 
+        $table->time('deadline')->nullable();
+        $table->string('accept_deadline', 20)->nullable(); 
         $table->timestamps();
         $table->foreign('course_student_id')->references('id')->on('course_students')->onDelete('cascade');
         });
