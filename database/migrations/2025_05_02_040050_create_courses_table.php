@@ -21,7 +21,6 @@ return new class extends Migration
             $table->date('next_date')->nullable(); 
             $table->string('accept_deadline', 20)->nullable();
             $table->string('type_process', 10)->nullable(); 
-            $table->boolean('has_deadline')->default(false);
             $table->unsignedBigInteger('class_id'); 
             $table->unsignedBigInteger('teacher_id'); 
             $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade')->onUpdate('cascade');

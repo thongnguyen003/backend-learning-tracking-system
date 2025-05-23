@@ -24,7 +24,6 @@ class JournalFactory extends Factory
             'end_day' => $this->faker->date(),
             'open_date' => $this->faker->dateTime(),
             'deadline' => $this->faker->optional()->time('H:i:s'),
-            'has_deadline' => $this->faker->boolean(),
             'accept_deadline' => $this->faker->optional()->word(),
             'deadline' => $this->faker->dateTimeBetween('+1 days', '+10 days'),
         ];

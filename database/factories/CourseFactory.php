@@ -30,7 +30,6 @@ class CourseFactory extends Factory
             'next_date' => $this->faker->optional()->date(),
             'accept_deadline' => $this->faker->optional()->word(),
             'type_process' => $this->faker->optional()->randomElement(['1week', '2week']),
-            'has_deadline' => $this->faker->boolean(),
             'class_id' => Classes::factory(), // Liên kết ngẫu nhiên với một lớp học
             'teacher_id' => Teacher::factory(), // Liên kết ngẫu nhiên với một giáo viên
         ];
