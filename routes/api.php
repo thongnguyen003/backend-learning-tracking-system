@@ -11,6 +11,8 @@
     use App\Http\Controllers\DetailMessageController;
     use App\Http\Controllers\api\TeacherController;
     use App\Http\Controllers\JournalGoalController;
+    use App\Http\Controllers\AchievementController;
+    use App\Http\Controllers\AchievementImageController;
     
 use App\Http\Middleware\AuthMiddleware;
 
@@ -51,6 +53,7 @@ use App\Http\Middleware\AuthMiddleware;
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
         Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
+
     });
     Route::get('/teachers', [TeacherController::class, 'index']);
     Route::get('/student/{id}', [StudentController::class, 'show']);
@@ -74,4 +77,15 @@ use App\Http\Middleware\AuthMiddleware;
         Route::post('/', [JournalSelfController::class, 'store']);
         Route::put('/{id}', [JournalSelfController::class, 'update']);
         Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
+    });
+    Route::group(['prefix'=>'achievement'],function(){
+        Route::get('/getByStudentId/{id}',[AchievementController::class,'getByStudentId']);
+        Route::post('/',[AchievementController::class,'store']);
+        Route::put('/{id}', [AchievementController::class, 'update']);
+        Route::delete('/{id}', [AchievementController::class, 'destroy']);
+         Route::group(['prefix'=>'image'],function(){
+            Route::post('/',[AchievementImageController::class,'store']);
+            Route::put('/{id}', [AchievementImageController::class, 'update']);
+            Route::delete('/{id}', [AchievementImageController::class, 'destroy']);
+        });
     });

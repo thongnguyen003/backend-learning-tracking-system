@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Services\AchievementImageService;
 use Illuminate\Http\Request;
-use App\Services\AchievementService;
 
-class AchievementController extends Controller
+class AchievementImageController extends Controller
 {
     protected $service;
-    public function __construct(AchievementService $service){
+    public function __construct(AchievementImageService $service){
         $this->service = $service;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -24,7 +24,7 @@ class AchievementController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -32,14 +32,11 @@ class AchievementController extends Controller
      */
     public function store(Request $request)
     {
-        $infoAchievement['student_id']= $request->input('student_id');
-        $infoAchievement['title']= $request->input('title');
-        $infoAchievement['description']= $request->input('description');
-        $links = $request->input('links');
-        $array = ['infoAchievement'=>$infoAchievement,'links'=>$links];
+        $info['link']= $request->input('link');
+        $info['achievement_id']= $request->input('achievement_id');
         try {
             
-           $this->service->create($array);
+           $this->service->create($info);
 
             return response()->json([
                 'message' => 'Add  successful',
@@ -58,9 +55,6 @@ class AchievementController extends Controller
     {
         //
     }
-    public function getByStudentId($studentId){
-        return $this->service->getByStudentId($studentId);
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -75,11 +69,10 @@ class AchievementController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        $infoAchievement['title']= $request->input('title');
-        $infoAchievement['description']= $request->input('description');
+        $info['link']= $request->input('link');
         try {
             
-           $this->service->update($id,$infoAchievement);
+           $this->service->update($id,$info);
 
             return response()->json([
                 'message' => 'Update  successful',
@@ -94,11 +87,8 @@ class AchievementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
-        return $this->service->delete($id);
-    }
-    public function delete(int $id){
-        return parent::delete($id);
+        $this->service->delete($id);
     }
 }
