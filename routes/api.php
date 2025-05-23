@@ -10,6 +10,7 @@
     use App\Http\Controllers\CourseController;
     use App\Http\Controllers\DetailMessageController;
     use App\Http\Controllers\api\TeacherController;
+    use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 
     // Route không yêu cầu xác thực
@@ -47,5 +48,7 @@ use App\Http\Middleware\AuthMiddleware;
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     });
 
+    Route::get('/admin/classes', [ClassController::class, 'index']);
+    Route::post('/admin/create-classes', [ClassController::class, 'store']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
