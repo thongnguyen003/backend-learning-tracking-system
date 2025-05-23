@@ -1,6 +1,11 @@
 <?php
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Route;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Admin\AdminUserController;
+
+
     use App\Http\Controllers\AuthController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\CourseGoalController;
@@ -14,6 +19,7 @@
     use App\Http\Controllers\AchievementController;
     use App\Http\Controllers\AchievementImageController;
     
+    use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 
     use App\Http\Controllers\JournalClassesController;
@@ -55,28 +61,23 @@ use App\Http\Middleware\AuthMiddleware;
         Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
 
     });
-    Route::get('/teachers', [TeacherController::class, 'index']);
-    Route::get('/student/{id}', [StudentController::class, 'show']);
-    Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
-    Route::get('/journal-goals', [JournalGoalController::class, 'index']);
-    Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
-    Route::post('/journal-goals', [JournalGoalController::class, 'store']);
-    Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
-    Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
 
-    Route::prefix('journal/journal-classes')->group(function () {
-        Route::get('/', [JournalClassesController::class, 'index']);      
-        Route::get('/{id}', [JournalClassesController::class, 'show']);  
-        Route::post('/', [JournalClassesController::class, 'store']);    
-        Route::put('/{id}', [JournalClassesController::class, 'update']);
-        Route::delete('/{id}', [JournalClassesController::class, 'destroy']);
-    });
-    Route::prefix('journal/journal-selfs')->group(function () {
-        Route::get('/', [JournalSelfController::class, 'index']);
-        Route::get('/{id}', [JournalSelfController::class, 'show']);
-        Route::post('/', [JournalSelfController::class, 'store']);
-        Route::put('/{id}', [JournalSelfController::class, 'update']);
-        Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
+
+    Route::prefix('admin')->group(function () {
+        // Get all users
+        Route::get('users', [AdminUserController::class, 'index']);
+        // Get only students
+        Route::get('students', [AdminUserController::class, 'getStudents']);
+        // Get only teachers
+        Route::get('teachers', [AdminUserController::class, 'getTeachers']);
+        // Get only admins
+        Route::get('admins', [AdminUserController::class, 'getAdmins']);
+        // Add multiple users
+        Route::post('add-user', [AdminUserController::class, 'addUsers']);
+        // Update a user
+        Route::put('users/{id}', [AdminUserController::class, 'updateUser']);
+        // Delete a user
+        Route::delete('users/{id}', [AdminUserController::class, 'deleteUser']);
     });
     Route::group(['prefix'=>'achievement'],function(){
         Route::get('/getByStudentId/{id}',[AchievementController::class,'getByStudentId']);
@@ -89,3 +90,8 @@ use App\Http\Middleware\AuthMiddleware;
             Route::delete('/{id}', [AchievementImageController::class, 'destroy']);
         });
     });
+
+    Route::get('/admin/classes', [ClassController::class, 'index']);
+    Route::post('/admin/create-classes', [ClassController::class, 'store']);
+Route::get('/student/{id}', [StudentController::class, 'show']);
+Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
