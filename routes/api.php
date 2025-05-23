@@ -13,6 +13,7 @@
     use App\Http\Controllers\JournalGoalController;
     use App\Http\Controllers\JournalTimeController;
     
+    use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 
     use App\Http\Controllers\JournalClassesController;
@@ -85,3 +86,8 @@ use App\Http\Middleware\AuthMiddleware;
         Route::put('/{id}', [JournalSelfController::class, 'update']);
         Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
     });
+
+    Route::get('/admin/classes', [ClassController::class, 'index']);
+    Route::post('/admin/create-classes', [ClassController::class, 'store']);
+Route::get('/student/{id}', [StudentController::class, 'show']);
+Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
