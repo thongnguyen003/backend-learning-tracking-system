@@ -1,6 +1,11 @@
-    <?php
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Route;
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Admin\AdminUserController;
+
+
     use App\Http\Controllers\AuthController;
     use App\Http\Controllers\StudentController;
     use App\Http\Controllers\CourseGoalController;
@@ -38,4 +43,22 @@ use App\Http\Middleware\AuthMiddleware;
     });
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
+    });
+
+
+    Route::prefix('admin')->group(function () {
+        // Get all users
+        Route::get('users', [AdminUserController::class, 'index']);
+        // Get only students
+        Route::get('students', [AdminUserController::class, 'getStudents']);
+        // Get only teachers
+        Route::get('teachers', [AdminUserController::class, 'getTeachers']);
+        // Get only admins
+        Route::get('admins', [AdminUserController::class, 'getAdmins']);
+        // Add multiple users
+        Route::post('add-user', [AdminUserController::class, 'addUsers']);
+        // Update a user
+        Route::put('users/{id}', [AdminUserController::class, 'updateUser']);
+        // Delete a user
+        Route::delete('users/{id}', [AdminUserController::class, 'deleteUser']);
     });
