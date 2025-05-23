@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\AdminUserController;
     use App\Http\Controllers\DetailMessageController;
     use App\Http\Controllers\api\TeacherController;
     use App\Http\Controllers\JournalGoalController;
+    use App\Http\Controllers\AchievementController;
+    use App\Http\Controllers\AchievementImageController;
     
     use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
@@ -57,6 +59,7 @@ use App\Http\Middleware\AuthMiddleware;
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
         Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
+
     });
 
 
@@ -75,6 +78,17 @@ use App\Http\Middleware\AuthMiddleware;
         Route::put('users/{id}', [AdminUserController::class, 'updateUser']);
         // Delete a user
         Route::delete('users/{id}', [AdminUserController::class, 'deleteUser']);
+    });
+    Route::group(['prefix'=>'achievement'],function(){
+        Route::get('/getByStudentId/{id}',[AchievementController::class,'getByStudentId']);
+        Route::post('/',[AchievementController::class,'store']);
+        Route::put('/{id}', [AchievementController::class, 'update']);
+        Route::delete('/{id}', [AchievementController::class, 'destroy']);
+         Route::group(['prefix'=>'image'],function(){
+            Route::post('/',[AchievementImageController::class,'store']);
+            Route::put('/{id}', [AchievementImageController::class, 'update']);
+            Route::delete('/{id}', [AchievementImageController::class, 'destroy']);
+        });
     });
 
     Route::get('/admin/classes', [ClassController::class, 'index']);
