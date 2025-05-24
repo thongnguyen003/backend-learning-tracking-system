@@ -132,5 +132,11 @@ class StudentController extends Controller
         return response()->json(['message' => $e->getMessage()], 500);
     }
 }
+    public function showStudentsByClassId($classId)
+    {
+        $students = $this->studentService->getStudentsByClassId($classId);
+        
+        return $students; // Trả về danh sách sinh viên dưới dạng JSON
+    }
 
 }
