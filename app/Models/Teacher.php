@@ -16,7 +16,7 @@ class Teacher extends Authenticatable
     use HasApiTokens, Notifiable;
 
     protected $fillable = [
-        'name',
+        'teacher_name',
         'email',
         'password',
     ];
