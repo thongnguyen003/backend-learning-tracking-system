@@ -11,4 +11,7 @@ class CourseService extends Service {
     public function getCoursesDetailsByClassId(int $studentId){
         return $this->repository->getCoursesDetailsByClassId($studentId);
     }
+    public function getCoursesDetailsByCourseId(int $courseId){
+        return $this->repository->getCourseDetailsByCourseId($courseId);
+    }
 }
