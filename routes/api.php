@@ -95,3 +95,22 @@ use App\Http\Middleware\AuthMiddleware;
     Route::post('/admin/create-classes', [ClassController::class, 'store']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
+Route::prefix('journal/journal-classes')->group(function () {
+        Route::get('/', [JournalClassesController::class, 'index']);      
+        Route::get('/{id}', [JournalClassesController::class, 'show']);  
+        Route::post('/', [JournalClassesController::class, 'store']);    
+        Route::put('/{id}', [JournalClassesController::class, 'update']);
+        Route::delete('/{id}', [JournalClassesController::class, 'destroy']);
+    });
+    Route::prefix('journal/journal-selfs')->group(function () {
+        Route::get('/', [JournalSelfController::class, 'index']);
+        Route::get('/{id}', [JournalSelfController::class, 'show']);
+        Route::post('/', [JournalSelfController::class, 'store']);
+        Route::put('/{id}', [JournalSelfController::class, 'update']);
+        Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
+    });
+        Route::get('/journal-goals', [JournalGoalController::class, 'index']);
+    Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
+    Route::post('/journal-goals', [JournalGoalController::class, 'store']);
+    Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
+    Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
