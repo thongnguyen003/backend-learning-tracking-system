@@ -8,6 +8,7 @@ use App\Models\CourseStudent;
 use App\Models\Course;
 use App\Models\DetailMessage;
 use App\Models\Classes;
+use App\Models\Achievement;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Student extends Authenticatable
 {
@@ -16,6 +17,7 @@ class Student extends Authenticatable
     protected $fillable = [
         'student_name',
         'email',
+        'student_name',
         'password',
         'phone_number',
         'hometown',
@@ -42,5 +44,7 @@ class Student extends Authenticatable
     public function course_students (){
         return $this->hasMany(CourseStudent::class,'course_student_id');
     }
-
+    public function achievements(){
+        return $this->hasMany(Achievement::class,"student_id");
+    }
 }

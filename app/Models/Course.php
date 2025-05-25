@@ -13,8 +13,6 @@ class Course extends Model
     use HasFactory;
 
     protected $table = "courses";
-
-    // ✅ THÊM DÒNG NÀY:
     protected $fillable = [
         'course_name',
         'start_day',

@@ -46,6 +46,15 @@ class CourseController extends Controller
         $result = $this->service->getCoursesDetailsByStudentId($id);
         return response()->json($result);
     }
+    public function getCourseByClassId($id){
+        $result = $this->service->getCoursesDetailsByClassId($id);
+        return response()->json($result);
+    }
+    public function getCourseByCourseId($id){
+        $result = $this->service->getCoursesDetailsByCourseId($id);
+        return response()->json($result);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
