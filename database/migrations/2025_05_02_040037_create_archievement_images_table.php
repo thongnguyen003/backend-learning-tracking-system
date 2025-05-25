@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('archievement_images', function (Blueprint $table) {
+        Schema::create('achievement_images', function (Blueprint $table) {
             $table->id();
             $table->String('link',225);
-            $table->unsignedBigInteger('archievement_id');
-            $table->foreign('archievement_id')->references('id')->on('archievements')->onDelete('cascade');
+            $table->unsignedBigInteger('achievement_id');
+            $table->foreign('achievement_id')->references('id')->on('achievements')->onDelete('cascade');
             $table->timestamps();
         });
     }
