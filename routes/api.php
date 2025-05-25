@@ -25,7 +25,6 @@ use App\Http\Middleware\AuthMiddleware;
     Route::group(['prefix' => 'journal'], function () {
         Route::get('/getByCourseStudentId/{id}', [JournalController::class, 'getJournalsByCourseStudentId']);
     });
-    
     Route::apiResource('course-goals', CourseGoalController::class);
 
 
@@ -51,6 +50,7 @@ use App\Http\Middleware\AuthMiddleware;
     Route::group(['prefix'=>'course'],function(){
         Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     });
+
     Route::get('/teachers', [TeacherController::class, 'index']);
     Route::get('/student/{id}', [StudentController::class, 'show']);
     Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
