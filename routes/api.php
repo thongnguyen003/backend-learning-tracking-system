@@ -4,11 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AdminUserController;
+
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\CourseGoalController;
 use App\Http\Controllers\JournalController;
-use App\Http\Controllers\StudentProfileController;
+// use App\Http\Controllers\StudentProfileController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DetailMessageController;
@@ -21,6 +23,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
+// use App\Http\Controllers\ClassController;
 
 // Route không yêu cầu xác thực
 // Comment out or remove this line temporarily to fix missing StudentProfileController error
@@ -30,7 +33,6 @@ Route::get('course-goals/getByCourseStudentId/{courseStudentId}', [CourseGoalCon
 Route::group(['prefix' => 'journal'], function () {
     Route::get('/getByCourseStudentId/{id}', [JournalController::class, 'getJournalsByCourseStudentId']);
 });
-
 Route::apiResource('course-goals', CourseGoalController::class);
 
 
@@ -40,6 +42,7 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
 Route::group(['prefix'=>'message'],function(){
     Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
     Route::get('/getByJournalClass/{id}',[MessageController::class,'getMessageDetailByJournalClassId']);
@@ -51,19 +54,17 @@ Route::group(['prefix'=>'message'],function(){
     });
     Route::post('/',[MessageController::class,'store']);
     Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
-
 });
 Route::group(['prefix'=>'course'],function(){
     Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
     Route::get('/getByCourseId/{id}',[CourseController::class,'getCourseByCourseId']);
-
 });
+
 
 
 Route::apiResource('journal-times', JournalTimeController::class);
 Route::get('journal-times/course/{courseId}', [JournalTimeController::class, 'getJournalTimesByCourseId']);
-
 Route::get('/teachers', [TeacherController::class, 'index']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
@@ -73,6 +74,7 @@ Route::post('/journal-goals', [JournalGoalController::class, 'store']);
 Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
 Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
 Route::get('/students/class/{classId}', [StudentController::class, 'showStudentsByClassId']);
+
 
 
 Route::prefix('admin')->group(function () {
@@ -96,17 +98,23 @@ Route::group(['prefix'=>'achievement'],function(){
     Route::post('/',[AchievementController::class,'store']);
     Route::put('/{id}', [AchievementController::class, 'update']);
     Route::delete('/{id}', [AchievementController::class, 'destroy']);
-        Route::group(['prefix'=>'image'],function(){
+    Route::group(['prefix'=>'image'],function(){
         Route::post('/',[AchievementImageController::class,'store']);
         Route::put('/{id}', [AchievementImageController::class, 'update']);
         Route::delete('/{id}', [AchievementImageController::class, 'destroy']);
     });
 });
-
 Route::get('/admin/classes', [ClassController::class, 'index']);
 Route::post('/admin/create-classes', [ClassController::class, 'store']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
+
+Route::group(['prefix'=>'class'], function(){
+    Route::get('/getByTeacherId/{id}', [ClassController::class, 'getClassByTeacherId']);
+    Route::get('/getByClassId/{id}', [ClassController::class, 'getClassByClassId']); // Thêm route mới
+});
+
+
 Route::prefix('journal/journal-classes')->group(function () {
     Route::get('/', [JournalClassesController::class, 'index']);      
     Route::get('/{id}', [JournalClassesController::class, 'show']);  
