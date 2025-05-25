@@ -49,8 +49,7 @@ class ClassController extends Controller
         ], 201);
     }
        public function getClassByTeacherId($id){
-        $result = $this->classService->getClassDetailsByTeacherId($id);
-        return response($result);
+        return $result = $this->classService->getClassDetailsByTeacherId($id);
     }
    public function getClassByClassId($id)
     {

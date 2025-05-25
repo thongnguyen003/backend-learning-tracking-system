@@ -39,7 +39,6 @@ class AuthService
             \Log::error('Invalid password', ['email' => $email]);
             throw new Exception('Invalid password');
         }
-
         // Tạo token với Sanctum
         $token = $user->createToken('auth-token')->plainTextToken;
 
