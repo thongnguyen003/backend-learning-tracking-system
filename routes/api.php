@@ -16,6 +16,7 @@ use App\Http\Middleware\AuthMiddleware;
 
     use App\Http\Controllers\JournalClassesController;
     use App\Http\Controllers\JournalSelfController;
+    use App\Http\Controllers\ClassController;
     
     // Route không yêu cầu xác thực
     // Comment out or remove this line temporarily to fix missing StudentProfileController error
@@ -73,4 +74,8 @@ use App\Http\Middleware\AuthMiddleware;
         Route::post('/', [JournalSelfController::class, 'store']);
         Route::put('/{id}', [JournalSelfController::class, 'update']);
         Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
+    });
+
+       Route::group(['prefix'=>'class'], function(){
+        Route::get('/getByTeacherId/{id}', [ClassController::class, 'getClassByTeacherId']);
     });
