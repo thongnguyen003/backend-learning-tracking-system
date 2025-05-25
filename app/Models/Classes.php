@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\ClassTeacher;
 use App\Models\Teacher;
-
+use App\Models\Student;
 class Classes extends Model
 {
     use HasFactory; 
@@ -25,7 +25,10 @@ class Classes extends Model
         ->using(ClassTeacher::class)
         ->withTimestamps();
     }
-
+    public function student()
+    {
+        return $this->belongsTo(Teacher::class, 'student_id');
+    }
 
     public function class_teachers (){
         return $this->hasMany(ClassTeacher::class,'classes_id');
