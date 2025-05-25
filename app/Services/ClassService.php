@@ -4,10 +4,9 @@ namespace App\Services;
 
 use App\Repositories\ClassRepository;
 
-class ClassService
+class ClassService extends Service
 {
     protected $classRepository;
-
     public function __construct(ClassRepository $classRepository)
     {
         $this->classRepository = $classRepository;
@@ -22,4 +21,18 @@ class ClassService
     {
         return $this->classRepository->create($data);
     }
+       public function getClassDetailsByTeacherId(int $teacherId){
+        return $this->classRepository->getClassDetailsByTeacherId($teacherId);
+    }
+    public function getClassById(int $id)
+    {
+        return $this->classRepository->getClassById($id);
+    }
 }
+
+
+
+
+
+
+ 

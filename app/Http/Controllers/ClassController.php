@@ -8,6 +8,7 @@ use App\Services\ClassService;
 class ClassController extends Controller
 {
     protected $classService;
+
     public function __construct(ClassService $classService)
     {
         $this->classService = $classService;
@@ -47,4 +48,26 @@ class ClassController extends Controller
             'class' => $newClass
         ], 201);
     }
+       public function getClassByTeacherId($id){
+        $result = $this->classService->getClassDetailsByTeacherId($id);
+        return response($result);
+    }
+   public function getClassByClassId($id)
+    {
+        $class = $this->classService->getClassById($id);
+
+        if (!$class) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Class not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $class
+        ]);
+    }
+
 }
+
