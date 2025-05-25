@@ -1,14 +1,7 @@
 <?php
-
-
 namespace App\Http\Controllers;
-
-
 use Illuminate\Http\Request;
 use App\Services\TeacherService;
-
-
-
 
 class TeacherController extends Controller
 {

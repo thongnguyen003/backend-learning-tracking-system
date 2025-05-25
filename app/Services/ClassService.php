@@ -22,7 +22,11 @@ class ClassService extends Service
         return $this->classRepository->create($data);
     }
        public function getClassDetailsByTeacherId(int $teacherId){
-        return $this->repository->getClassDetailsByTeacherId($teacherId);
+        return $this->classRepository->getClassDetailsByTeacherId($teacherId);
+    }
+    public function getClassById(int $id)
+    {
+        return $this->classRepository->getClassById($id);
     }
 }
 

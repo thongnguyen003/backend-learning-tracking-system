@@ -25,13 +25,12 @@ class Classes extends Model
         ->using(ClassTeacher::class)
         ->withTimestamps();
     }
-    public function student()
-    {
-        return $this->belongsTo(Teacher::class, 'student_id');
-    }
 
     public function class_teachers (){
         return $this->hasMany(ClassTeacher::class,'classes_id');
     }
-
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'class_id');
+    }
 }

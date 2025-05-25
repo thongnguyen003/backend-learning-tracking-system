@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Classes;
-use Illuminate\Routing\ResponseFactory;
 
 class ClassRepository
 {
@@ -21,8 +20,10 @@ class ClassRepository
     {
         return $this->model->create($data);
     }
-     // retrive data of class and name of teacher and number of course flowing courses by teacher_id
-    public function getClassDetailsByTeacherId( int $teacherId){
+
+    // retrive data of class and name of teacher and number of course flowing courses by teacher_id
+
+     public function getClassDetailsByTeacherId( int $teacherId){
         $Classes = Classes::whereHas('teachers', function($query) use ($teacherId) {
         $query->where('teachers.id', $teacherId);
         })
@@ -37,9 +38,21 @@ class ClassRepository
         }
         return response()->json($Classes);
     }
+    public function getClassById(int $id)
+    {
+        $class = $this->model
+            ->where('id', $id)
+            ->select('id', 'name', 'start_day')
+            ->withCount('students') 
+            ->first();
+
+        return $class;
+    }
+    public function findById(int $id)
+    {
+        // Lấy lớp cùng số học sinh (count students), tên lớp và ngày bắt đầu
+        return $this->model
+            ->withCount('students') // đếm số học sinh
+            ->find($id, ['id', 'name', 'start_day']); // lấy các cột cần thiết
+    }
 }
-
-
-
-   
-
