@@ -20,11 +20,11 @@ class BaseService {
         return $this->repository->find($id);
     }
 
-    public function create(array $data): Model {
+    public function create(array $data) {
         return $this->repository->create($data);
     }
 
-    public function update(int $id, array $data): ?Model {
+    public function update(int $id, array $data) {
         return $this->repository->update($id, $data);
     }
 

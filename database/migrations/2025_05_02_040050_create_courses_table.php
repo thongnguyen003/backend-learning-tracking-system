@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('course_name', 255);
             $table->date('start_day'); 
             $table->date('end_day'); 
-            $table->integer('status');
-            $table->time('default_deadline')->default('23:59:59');
-            $table->dateTime('course_deadline')->nullable();
+            $table->integer('status')->default(1);
+            $table->time('next_deadline')->nullable()->default('23:59:59');
+            $table->date('next_date')->nullable(); 
+            $table->string('accept_deadline', 20)->nullable();
+            $table->string('type_process', 10)->nullable(); 
             $table->unsignedBigInteger('class_id'); 
             $table->unsignedBigInteger('teacher_id'); 
             $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade')->onUpdate('cascade');

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('subject_id'); 
+            $table->unsignedBigInteger('subject_id')->nullable();
             $table->string('teacher_name', 50); 
             $table->date('day_of_birth')->nullable();
             $table->enum('gender', ['male', 'female', 'other']);
@@ -22,8 +22,7 @@ return new class extends Migration
             $table->string('email', 255); 
             $table->text('password'); 
             $table->timestamps();
-            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade')->onUpdate('cascade');
-        });
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade')->onUpdate('cascade');        });
     }
 
     /**

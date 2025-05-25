@@ -1,12 +1,27 @@
 <?php
+
 namespace App\Repositories;
+
 use App\Models\Classes;
 use Illuminate\Routing\ResponseFactory;
-class ClassRepository extends Repository {
-    public function __construct(Classes $model){
+
+class ClassRepository
+{
+    protected $model;
+
+    public function __construct(Classes $model)
+    {
         $this->model = $model;
     }
-    // retrive data of class and name of teacher and number of course flowing courses by teacher_id
+    public function getAllClasses()
+    {
+        return Classes::all(); 
+    }
+    public function create(array $data)
+    {
+        return $this->model->create($data);
+    }
+     // retrive data of class and name of teacher and number of course flowing courses by teacher_id
     public function getClassDetailsByTeacherId( int $teacherId){
         $Classes = Classes::whereHas('teachers', function($query) use ($teacherId) {
         $query->where('teachers.id', $teacherId);
@@ -23,3 +38,8 @@ class ClassRepository extends Repository {
         return response()->json($Classes);
     }
 }
+
+
+
+   
+

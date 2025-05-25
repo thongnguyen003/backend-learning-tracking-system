@@ -33,4 +33,5 @@ class Classes extends Model
     public function class_teachers (){
         return $this->hasMany(ClassTeacher::class,'classes_id');
     }
+
 }
