@@ -35,4 +35,22 @@ class StudentRepository extends Repository{
     public function findById(int $id){
         return $this->model->find($id);
     }
+
+    public function update($id, $data)
+    {
+        $student = $this->findById($id);
+        if (!$student) {
+            throw new \Exception("Student not found with ID: {$id}");
+        }
+        $student->update($data);
+        return $student;
+    }
+    public function getStudentsByClassId(int $classId)
+    {
+        $students = $this->model->where('class_id', $classId)->get();
+        if ($students->isEmpty()) {
+            return response()->json(['error' => 'No students found for this class'], 404);
+        }
+        return response()->json($students);
+    }
 }

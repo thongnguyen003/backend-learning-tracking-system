@@ -2,14 +2,15 @@
 namespace App\Services;
 
 use App\Repositories\CourseGoalRepository;
+use App\Repositories\BaseRepository;
 
-class CourseGoalService
+class CourseGoalService extends BaseService
 {
-    protected $repository;
+    protected BaseRepository $repository;
 
     public function __construct(CourseGoalRepository $repository)
     {
-        $this->repository = $repository;
+        parent::__construct($repository);
     }
 
     public function getGoalsByStudentId($courseStudentId)
@@ -17,4 +18,3 @@ class CourseGoalService
         return $this->repository->getByCourseStudentId($courseStudentId);
     }
 }
-

@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
             JournalSeeder::class,
             JournalClassesSeeder::class,
             JournalGoalSeeder::class,
-            JournalSelfSeeder::class
+            JournalSelfSeeder::class,
+            MessageSeeder::class,
+            DetailMessageSeeder::class
         ]);
     }
 }

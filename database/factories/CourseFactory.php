@@ -26,8 +26,10 @@ class CourseFactory extends Factory
             'start_day' => $startDay, // Ngày bắt đầu ngẫu nhiên
             'end_day' => $endDay, // Ngày kết thúc ngẫu nhiên sau ngày bắt đầu
             'status' => $this->faker->numberBetween(0, 1), // Trạng thái (giả định: 0 = inactive, 1 = active)
-            'default_deadline' => '23:59:59', // Giá trị mặc định
-            'course_deadline' => $this->faker->optional()->dateTimeBetween($startDay, $endDay), // Deadline ngẫu nhiên hoặc null
+            'next_deadline' => $this->faker->time('H:i:s'),
+            'next_date' => $this->faker->optional()->date(),
+            'accept_deadline' => $this->faker->optional()->word(),
+            'type_process' => $this->faker->optional()->randomElement(['1week', '2week']),
             'class_id' => Classes::factory(), // Liên kết ngẫu nhiên với một lớp học
             'teacher_id' => Teacher::factory(), // Liên kết ngẫu nhiên với một giáo viên
         ];
