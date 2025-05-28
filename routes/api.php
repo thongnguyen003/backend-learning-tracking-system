@@ -23,6 +23,8 @@ use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
+use App\Http\Controllers\ClassTeacherController;
+
 // use App\Http\Controllers\ClassController;
 
 // Route không yêu cầu xác thực
@@ -74,7 +76,7 @@ Route::post('/journal-goals', [JournalGoalController::class, 'store']);
 Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
 Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
 Route::get('/students/class/{classId}', [StudentController::class, 'showStudentsByClassId']);
-
+Route::get('/teachers/class/{classId}', [TeacherController::class, 'showByClassId']);
 
 
 Route::prefix('admin')->group(function () {
@@ -108,13 +110,21 @@ Route::get('/admin/classes', [ClassController::class, 'index']);
 Route::post('/admin/create-classes', [ClassController::class, 'store']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
+Route::get('/students/class/{classId}', [StudentController::class, 'showStudentsByClassId']);
 
 Route::group(['prefix'=>'class'], function(){
     Route::get('/getByTeacherId/{id}', [ClassController::class, 'getClassByTeacherId']);
     Route::get('/getByClassId/{id}', [ClassController::class, 'getClassByClassId']); // Thêm route mới
 });
-
-
+// admin: class_teacher
+Route::prefix('class-teachers')->group(function () {
+    Route::get('/', [ClassTeacherController::class, 'index']);
+    Route::get('/{id}', [ClassTeacherController::class, 'show']);
+    Route::post('/', [ClassTeacherController::class, 'store']);
+    Route::put('/{id}', [ClassTeacherController::class, 'update']);
+    Route::delete('/{id}', [ClassTeacherController::class, 'destroy']);
+});
+Route::get('/class-teachers/class/{classId}/teachers', [ClassTeacherController::class, 'showTeachersByClassId']);
 Route::prefix('journal/journal-classes')->group(function () {
     Route::get('/', [JournalClassesController::class, 'index']);      
     Route::get('/{id}', [JournalClassesController::class, 'show']);  
