@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,15 +10,16 @@ use App\Models\Course;
 use App\Models\DetailMessage;
 use App\Models\Classes;
 use App\Models\Achievement;
+use App\Models\StudentVisit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 class Student extends Authenticatable
 {
-    use HasApiTokens, Notifiable,HasFactory;
+    use HasApiTokens, Notifiable, HasFactory;
 
     protected $fillable = [
         'student_name',
         'email',
-        'student_name',
         'password',
         'phone_number',
         'hometown',
@@ -30,21 +32,36 @@ class Student extends Authenticatable
         'password',
         'remember_token',
     ];
-    public function courses (){
-        return $this->belongsToMany(Course::class,'course_students')
-        ->using(CourseStudent::class)
-        ->withTimeStamps();
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_students')
+            ->using(CourseStudent::class)
+            ->withTimestamps();
     }
-    public function detail_messages (){
-        return $this->hasMany(DetailMessage::class,'student_id');
+
+    public function detail_messages()
+    {
+        return $this->hasMany(DetailMessage::class, 'student_id');
     }
-    public function class(){
+
+    public function class()
+    {
         return $this->belongsTo(Classes::class, 'class_id');
     }
-    public function course_students (){
-        return $this->hasMany(CourseStudent::class,'course_student_id');
+
+    public function course_students()
+    {
+        return $this->hasMany(CourseStudent::class, 'course_student_id');
     }
-    public function achievements(){
-        return $this->hasMany(Achievement::class,"student_id");
+
+    public function achievements()
+    {
+        return $this->hasMany(Achievement::class, "student_id");
+    }
+
+    public function visits()
+    {
+        return $this->hasMany(StudentVisit::class, 'student_id');
     }
 }
