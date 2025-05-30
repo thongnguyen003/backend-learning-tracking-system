@@ -37,11 +37,15 @@ Route::apiResource('course-goals', CourseGoalController::class);
 
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'login']);
+
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
 
 Route::group(['prefix'=>'message'],function(){
     Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
@@ -77,7 +81,7 @@ Route::get('/students/class/{classId}', [StudentController::class, 'showStudents
 
 
 
-Route::prefix('admin')->group(function () {
+Route::prefix('/admin')->group(function () {
     // Get all users
     Route::get('users', [AdminUserController::class, 'index']);
     // Get only students
