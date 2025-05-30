@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\CourseStudent;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\JournalTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -18,10 +19,13 @@ class Course extends Model
         'start_day',
         'end_day',
         'status',
-        'default_deadline',
         'course_deadline',
         'class_id',
         'teacher_id',
+        'type_process',
+        'accept_deadline',
+        'next_date',
+        'next_deadline'
     ];
 
     public function students()
@@ -37,5 +41,8 @@ class Course extends Model
     }
     public function courseStudents (){
         return $this->hasMany(CourseStudent::class,'course_id');
+    }
+    public function journalTimes (){
+        return $this->hasMany(JournalTime::class,'course_id');
     }
 }
