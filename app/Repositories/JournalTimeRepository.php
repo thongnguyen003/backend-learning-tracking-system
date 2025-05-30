@@ -4,16 +4,18 @@ namespace App\Repositories;
 
 use App\Models\JournalTime;
 
-class JournalTimeRepository
+class JournalTimeRepository extends BaseRepository
 {
+    public function __construct(JournalTime $model){
+        parent::__construct($model);
+    }
     public function getAll()
     {
         return JournalTime::all();
     }
 
-    public function getById($id)
-    {
-        return JournalTime::find($id);
+    public function find(int $id){
+        return parent::find($id);
     }
 
     public function create(array $data)
@@ -21,14 +23,8 @@ class JournalTimeRepository
         return JournalTime::create($data);
     }
 
-    public function update($id, array $data)
-    {
-        $journalTime = $this->getById($id);
-        if ($journalTime) {
-            $journalTime->update($data);
-            return $journalTime;
-        }
-        return null;
+    public function update(int $id,array $data){
+        return parent::update( $id, $data);
     }
 
     public function delete($id)
