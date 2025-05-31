@@ -63,11 +63,13 @@ Route::group(['prefix'=>'course'],function(){
     Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
     Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
     Route::get('/getByCourseId/{id}',[CourseController::class,'getCourseByCourseId']);
+    Route::post('/',[CourseController::class,'store']);
+    Route::put('/{id}',[CourseController::class,'update']);
+});
+Route::group(['prefix'=>'journal-times'],function(){
+    Route::put('/{id}',[JournalTimeController::class,'update']);
 });
 
-
-
-Route::apiResource('journal-times', JournalTimeController::class);
 Route::get('journal-times/course/{courseId}', [JournalTimeController::class, 'getJournalTimesByCourseId']);
 Route::get('/teachers', [TeacherController::class, 'index']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
@@ -77,7 +79,7 @@ Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
 Route::post('/journal-goals', [JournalGoalController::class, 'store']);
 Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
 Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
-Route::get('/students/class/{classId}', [StudentController::class, 'showStudentsByClassId']);
+Route::get('/students/byCourseId/{id}', [StudentController::class, 'showStudentsByCourseId']);
 
 
 

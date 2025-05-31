@@ -45,11 +45,14 @@ class StudentRepository extends Repository{
         $student->update($data);
         return $student;
     }
-    public function getStudentsByClassId(int $classId)
+    public function getStudentsByCourseId(int $courseId)
     {
-        $students = $this->model->where('class_id', $classId)->get();
+        $students = $this->model->whereHas('courses',function($query) use ($courseId){
+            $query->where('courses.id',$courseId);
+        })
+            ->get();
         if ($students->isEmpty()) {
-            return response()->json(['error' => 'No students found for this class'], 404);
+            return response()->json(['error' => 'No students found for this class']);
         }
         return response()->json($students);
     }
