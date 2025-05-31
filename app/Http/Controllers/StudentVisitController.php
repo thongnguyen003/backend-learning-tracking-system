@@ -62,4 +62,18 @@ class StudentVisitController extends Controller
         }
         return response()->json(['error' => 'Unauthorized'], 403);
     }
+
+    public function getVisitCountsByClass(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if ($user instanceof \App\Models\Admin && $user->role === 'admin') {
+            $month = $request->query('month', now()->format('Y-m'));
+            $visitCounts = $this->studentVisitService->getVisitCountsByClass($month);
+            return response()->json([
+                'status' => 'success',
+                'data' => $visitCounts
+            ], 200);
+        }
+        return response()->json(['error' => 'Unauthorized'], 403);
+    }
 }

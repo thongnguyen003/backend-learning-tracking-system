@@ -20,7 +20,6 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
 use App\Http\Controllers\StudentVisitController;
-
 // Route không yêu cầu xác thực
 Route::put('/student/change-password/{id}', [StudentController::class, 'changePassword']);
 Route::get('course-goals/getByCourseStudentId/{courseStudentId}', [CourseGoalController::class, 'indexByStudent']);
@@ -76,6 +75,7 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::post('add-user', [AdminUserController::class, 'addUsers']);
     Route::put('users/{id}', [AdminUserController::class, 'updateUser']);
     Route::delete('users/{id}', [AdminUserController::class, 'deleteUser']);
+    Route::get('achievements', [AchievementController::class, 'index']);
 });
 
 Route::group(['prefix' => 'achievement'], function () {
@@ -114,6 +114,7 @@ Route::prefix('journal/journal-selfs')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/track-visit', [StudentVisitController::class, 'trackVisit']);
     Route::get('/student-visits/{studentId}', [StudentVisitController::class, 'getVisitDates']);
+    Route::get('/student-visits-by-class', [StudentVisitController::class, 'getVisitCountsByClass']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

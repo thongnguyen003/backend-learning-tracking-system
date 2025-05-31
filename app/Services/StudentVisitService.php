@@ -31,4 +31,20 @@ class StudentVisitService
             })
             ->toArray();
     }
+
+    public function getVisitCountsByClass($month = null)
+    {
+        $month = $month ?? Carbon::now()->format('Y-m');
+        $year = Carbon::parse($month)->year;
+        $monthNum = Carbon::parse($month)->month;
+
+        return \DB::table('student_visits')
+            ->join('students', 'student_visits.student_id', '=', 'students.id')
+            ->join('classes', 'students.class_id', '=', 'classes.id')
+            ->select('classes.name as class_name', \DB::raw('count(student_visits.id) as visit_count'))
+            ->whereYear('student_visits.visit_date', $year)
+            ->whereMonth('student_visits.visit_date', $monthNum)
+            ->groupBy('classes.name')
+            ->get();
+    }
 }
