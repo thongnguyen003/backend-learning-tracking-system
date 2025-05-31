@@ -1,9 +1,9 @@
 <?php
 namespace App\Services;
-
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 
@@ -22,6 +22,9 @@ class AuthService
                 break;
             case 'teacher':
                 $model = Teacher::class;
+                break;
+            case 'admin':
+                $model = Admin::class;
                 break;
             default:
                 $model = User::class;

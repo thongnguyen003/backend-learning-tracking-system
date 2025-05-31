@@ -21,7 +21,7 @@ class AuthController extends Controller
         $password = $request->input('password');
 
         try {
-            if (!in_array($role, ['student', 'teacher', 'web'])) {
+            if (!in_array($role, ['student', 'teacher', 'admin','web'])) {
                 throw new Exception('Invalid role');
             }
 
