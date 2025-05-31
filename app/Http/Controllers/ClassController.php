@@ -17,7 +17,8 @@ class ClassController extends Controller
     public function index()
     {
         $user = request()->user();
-        if (!($user instanceof \App\Models\User && $user->role === 'admin')) {
+        \Log::info('User data:', ['user' => $user]); // Debug
+        if (!($user instanceof \App\Models\Admin && $user->role === 'admin')) { // Sửa Amin thành Admin
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         try {
@@ -27,6 +28,7 @@ class ClassController extends Controller
                 'data' => $classes,
             ], 200);
         } catch (\Exception $e) {
+            \Log::error('Error fetching classes:', ['message' => $e->getMessage()]); // Debug
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
@@ -37,7 +39,7 @@ class ClassController extends Controller
     public function store(Request $request)
     {
         $user = request()->user();
-        if (!($user instanceof \App\Models\User && $user->role === 'admin')) {
+        if (!($user instanceof \App\Models\Admin && $user->role === 'admin')) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $validated = $request->validate([
@@ -73,7 +75,7 @@ class ClassController extends Controller
     public function getClassByClassId($id)
     {
         $user = request()->user();
-        if (!($user instanceof \App\Models\User && $user->role === 'admin') && !($user instanceof \App\Models\Teacher)) {
+        if (!($user instanceof \App\Models\Admin && $user->role === 'admin') && !($user instanceof \App\Models\Teacher)) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
         $class = $this->classService->getClassById($id);

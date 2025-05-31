@@ -105,4 +105,29 @@ class StudentController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+    public function getStudentsByClassId($id)
+    {
+        $user = request()->user();
+
+        if (
+            !($user instanceof \App\Models\Admin && $user->role === 'admin') &&
+            !($user instanceof \App\Models\Teacher)
+        ) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        try {
+            $students = $this->studentService->getStudentsByClassId($id);
+            return response()->json([
+                'status' => 'success',
+                'data' => $students
+            ], 200);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching students by class:', ['message' => $e->getMessage()]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to fetch students'
+            ], 500);
+        }
+    }
 }

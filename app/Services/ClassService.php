@@ -14,6 +14,7 @@ class ClassService
         $this->classRepository = $classRepository;
     }
 
+    
     public function getAllClasses()
     {
         return $this->classRepository->getAll();

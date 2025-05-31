@@ -12,6 +12,7 @@ class ClassRepository
     {
         $this->model = $model;
     }
+    
 
     public function getAll()
     {

@@ -17,7 +17,6 @@ use App\Http\Controllers\JournalTimeController;
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AchievementImageController;
 use App\Http\Controllers\ClassController;
-use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
 use App\Http\Controllers\StudentVisitController;
@@ -66,9 +65,10 @@ Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
 Route::post('/journal-goals', [JournalGoalController::class, 'store']);
 Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
 Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
-Route::get('/students/class/{classId}', [StudentController::class, 'showStudentsByClassId']);
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
+    Route::get('classes', [ClassController::class, 'index']);
+    Route::post('create-classes', [ClassController::class, 'store']);
     Route::get('users', [AdminUserController::class, 'index']);
     Route::get('students', [AdminUserController::class, 'getStudents']);
     Route::get('teachers', [AdminUserController::class, 'getTeachers']);
@@ -89,11 +89,6 @@ Route::group(['prefix' => 'achievement'], function () {
         Route::delete('/{id}', [AchievementImageController::class, 'destroy']);
     });
 });
-
-Route::get('/admin/classes', [ClassController::class, 'index']);
-Route::post('/admin/create-classes', [ClassController::class, 'store']);
-Route::get('/student/{id}', [StudentController::class, 'show']);
-Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
 
 Route::group(['prefix' => 'class'], function () {
     Route::get('/getByTeacherId/{id}', [ClassController::class, 'getClassByTeacherId']);
@@ -116,11 +111,11 @@ Route::prefix('journal/journal-selfs')->group(function () {
     Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
 });
 
-// Thêm các API mới cho lịch theo dõi truy cập
 Route::middleware('auth:sanctum')->group(function () {
-    // Chỉ học sinh mới được ghi nhận truy cập
     Route::post('/track-visit', [StudentVisitController::class, 'trackVisit']);
     Route::get('/student-visits/{studentId}', [StudentVisitController::class, 'getVisitDates']);
 });
 
-// Ai cũng có thể xem lịch sử truy cập (kể cả không đăng nhập)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/students/class/{id}', [StudentController::class, 'getStudentsByClassId']);
+});
