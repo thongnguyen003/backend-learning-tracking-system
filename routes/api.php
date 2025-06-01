@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AdminUserController;
 
+use App\Http\Controllers\SubjectController;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
@@ -64,6 +65,11 @@ Route::group(['prefix'=>'course'],function(){
 });
 
 
+Route::get('subjects', [SubjectController::class, 'index']);
+Route::get('subjects/{id}', [SubjectController::class, 'show']);
+Route::post('subjects', [SubjectController::class, 'store']);
+Route::put('subjects/{id}', [SubjectController::class, 'update']);
+Route::delete('subjects/{id}', [SubjectController::class, 'destroy']);
 
 Route::apiResource('journal-times', JournalTimeController::class);
 Route::get('journal-times/course/{courseId}', [JournalTimeController::class, 'getJournalTimesByCourseId']);
@@ -122,7 +128,8 @@ Route::prefix('class-teachers')->group(function () {
     Route::get('/{id}', [ClassTeacherController::class, 'show']);
     Route::post('/', [ClassTeacherController::class, 'store']);
     Route::put('/{id}', [ClassTeacherController::class, 'update']);
-    Route::delete('/{id}', [ClassTeacherController::class, 'destroy']);
+    Route::delete('/', [ClassTeacherController::class, 'destroy']);
+    Route::get('/{id}', [ClassTeacherController::class, 'showTeachersByClassId']);
 });
 Route::get('/class-teachers/class/{classId}/teachers', [ClassTeacherController::class, 'showTeachersByClassId']);
 Route::prefix('journal/journal-classes')->group(function () {
@@ -139,3 +146,4 @@ Route::prefix('journal/journal-selfs')->group(function () {
     Route::put('/{id}', [JournalSelfController::class, 'update']);
     Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
 });
+Route::get('teachers/{teacherId}/classes', [ClassTeacherController::class, 'showClassesByTeacherId']);

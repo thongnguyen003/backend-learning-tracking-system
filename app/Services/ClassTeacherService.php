@@ -41,4 +41,12 @@ class ClassTeacherService
     {
         return $this->repository->findTeachersByClassId($classId);
     }
+    public function getByClassAndTeacher($classId, $teacherId)
+    {
+        return $this->repository->getByClassAndTeacher($classId, $teacherId);
+    }
+    public function getClassesByTeacherId($teacherId)
+    {
+        return $this->repository->findClassesByTeacherId($teacherId);
+    }
 }

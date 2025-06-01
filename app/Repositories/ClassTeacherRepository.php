@@ -48,4 +48,17 @@ class ClassTeacherRepository
             ->select('teachers.*') // Select fields from the teachers table
             ->get();
     }
+    public function getByClassAndTeacher($classId, $teacherId)
+    {
+        return $this->model::where('class_id', $classId)
+            ->where('teacher_id', $teacherId)
+            ->first();
+    }
+    public function findClassesByTeacherId($teacherId)
+    {
+        return $this->model::where('teacher_id', $teacherId)
+            ->join('classes', 'class_teachers.class_id', '=', 'classes.id')
+            ->select('classes.*') // Chọn các trường từ bảng classes
+            ->get();
+    }
 }
