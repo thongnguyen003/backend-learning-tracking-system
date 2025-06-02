@@ -33,6 +33,9 @@ class CourseService extends BaseService {
         }
         return false;
     }
+    public function getById(int $id) {
+        return parent::getById($id);
+    }
     public function update(int $id, array $data){
         if (!empty($data['start_date'])){
             $course = parent::getById($id);

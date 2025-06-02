@@ -49,10 +49,8 @@ class Student extends Authenticatable
     {
         return $this->belongsTo(Classes::class, 'class_id');
     }
-
-    public function course_students()
-    {
-        return $this->hasMany(CourseStudent::class, 'course_student_id');
+    public function course_students (){
+        return $this->hasMany(CourseStudent::class,'student_id');
     }
 
     public function achievements()

@@ -20,6 +20,7 @@ use App\Http\Controllers\AchievementImageController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
+use App\Http\Controllers\CourseStudentController;
 use App\Http\Controllers\ClassTeacherController;
 use App\Http\Controllers\StudentVisitController;
 // use App\Http\Controllers\ClassController;
@@ -28,6 +29,7 @@ Route::put('/student/change-password/{id}', [StudentController::class, 'changePa
 Route::get('course-goals/getByCourseStudentId/{courseStudentId}', [CourseGoalController::class, 'indexByStudent']);
 Route::group(['prefix' => 'journal'], function () {
     Route::get('/getByCourseStudentId/{id}', [JournalController::class, 'getJournalsByCourseStudentId']);
+    Route::post('/',[JournalController::class, 'store']);
 });
 Route::apiResource('course-goals', CourseGoalController::class);
 
@@ -60,6 +62,9 @@ Route::group(['prefix'=>'course'],function(){
     Route::get('/getByCourseId/{id}',[CourseController::class,'getCourseByCourseId']);
     Route::post('/',[CourseController::class,'store']);
     Route::put('/{id}',[CourseController::class,'update']);
+});
+Route::group(['prefix'=>'course-student'],function(){
+    Route::post('/',[CourseStudentController::class,'store']);
 });
 Route::group(['prefix'=>'journal-times'],function(){
     Route::put('/{id}',[JournalTimeController::class,'update']);
