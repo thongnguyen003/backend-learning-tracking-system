@@ -1,46 +1,48 @@
 <?php
-
 namespace App\Repositories;
-
 use App\Models\Student;
 use App\Models\JournalTime;
 use Illuminate\Support\Facades\Hash;
-
-class StudentRepository
-{
-    protected $model;
-
-    public function __construct(Student $model)
-    {
+class StudentRepository extends Repository{
+    public function __construct(Student $model){
         $this->model = $model;
     }
-
-    public function getAll()
-    {
-        return $this->model->select('id', 'student_name')->get();
+    public function login(array $studentData){
+        $student = $this->model->where('email',$studentData['email']);
+        if($student && Hash::check($studentData['password'],$student->password)){
+            return response()->json($student);
+        }else{
+            return response()->json(['error' => 'Unexited Account'], 401);
+        }
     }
-
-    public function findById($id)
-    {
-        return $this->model->with(['class', 'courses', 'achievements'])->find($id);
+    public function getStudentById(int $id){
+        $student = $this->model->find($id);
+        if($student){
+            return response()->json($student);
+        }else{
+            return response()->json(['error' => 'Unexited Account'], 401);
+        }
     }
-
-    public function getStudentsByClassId($classId)
-    {
-        return $this->model->where('class_id', $classId)->select('id', 'student_name')->get();
-    }
-
     public function updatePassword($id, $newPassword)
     {
-        $student = $this->model->findOrFail($id);
-        $student->password = Hash::make($newPassword);
-        $student->save();
-        return $student;
+        $student = $this->model->find($id);
+        if ($student) {
+            $student->password = Hash::make($newPassword);
+            $student->save();
+        }
+    }
+    
+
+    public function findById(int $id){
+        return $this->model->find($id);
     }
 
     public function update($id, $data)
     {
-        $student = $this->model->findOrFail($id);
+        $student = $this->findById($id);
+        if (!$student) {
+            throw new \Exception("Student not found with ID: {$id}");
+        }
         $student->update($data);
         return $student;
     }
@@ -75,6 +77,12 @@ class StudentRepository
         if ($students->isEmpty()) {
             return response()->json(['error' => 'No students found for this class']);
         }
-        return response()->json($data);
+return response()->json($data);
+    }
+
+    
+    public function getStudentsByClassId($classId)
+    {
+        return $this->model->where('class_id', $classId)->select('id', 'student_name')->get();
     }
 }

@@ -67,4 +67,5 @@ class ClassController extends Controller
             'data' => $class
         ]);
     }
+
 }

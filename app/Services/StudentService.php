@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Services;
 
 use App\Repositories\StudentRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 class StudentService
 {
@@ -13,22 +13,6 @@ class StudentService
     {
         $this->studentRepository = $studentRepository;
     }
-
-    public function getAllStudents()
-    {
-        return $this->studentRepository->getAll();
-    }
-
-    public function findById($id)
-    {
-        return $this->studentRepository->findById($id);
-    }
-
-    public function getStudentsByClassId($classId)
-    {
-        return $this->studentRepository->getStudentsByClassId($classId);
-    }
-
     public function changePassword($id, $data)
     {
         try {
@@ -53,9 +37,17 @@ class StudentService
     {
         return $this->studentRepository->update($id, $data);
     }
+
+    public function findById(int $id){
+        return $this->studentRepository->findById($id);
+    }
     public function showStudentsByCourseId(int $id)
     {
         return $this->studentRepository->getStudentsByCourseId($id);
     }
-}
 
+    public function getStudentsByClassId($classId)
+    {
+        return $this->studentRepository->getStudentsByClassId($classId);
+    }
+}
