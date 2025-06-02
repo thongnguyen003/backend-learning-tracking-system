@@ -22,7 +22,7 @@ class StudentRepository
 
     public function findById($id)
     {
-        return $this->model->with(['class', 'courses', 'achievements'])->findOrFail($id);
+        return $this->model->with(['class', 'courses', 'achievements'])->find($id);
     }
 
     public function getStudentsByClassId($classId)

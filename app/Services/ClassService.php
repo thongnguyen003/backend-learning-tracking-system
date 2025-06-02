@@ -17,21 +17,18 @@ class ClassService
     
     public function getAllClasses()
     {
-        return $this->classRepository->getAll();
+        return $this->classRepository->getAllClasses();
     }
 
     public function createClass(array $data)
     {
         return $this->classRepository->create($data);
     }
-
-    public function getClassDetailsByTeacherId($teacherId)
-    {
-        return $this->classRepository->getByTeacherId($teacherId);
+       public function getClassDetailsByTeacherId(int $teacherId){
+        return $this->classRepository->getClassDetailsByTeacherId($teacherId);
     }
-
-    public function getClassById($id)
+    public function getClassById(int $id)
     {
-        return $this->classRepository->findById($id);
+        return $this->classRepository->getClassById($id);
     }
 }

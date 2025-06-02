@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Student;
+use Illuminate\Support\Facades\Log;
 use App\Services\StudentService;
 use Illuminate\Http\JsonResponse;
 
@@ -20,11 +21,14 @@ class StudentController extends Controller
 
     public function index(): JsonResponse
     {
-        $user = request()->user();
-        if (!($user instanceof \App\Models\User && $user->role === 'admin')) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // $user = request()->user();
+        // if (!($user instanceof \App\Models\User && $user->role === 'admin')) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $students = $this->studentService->getAllStudents();
+        Log::info('Process Information', [
+                'data' => $students,
+            ]);
         return response()->json([
             'status' => 'success',
             'data' => $students
@@ -33,38 +37,39 @@ class StudentController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $user = request()->user();
-        if (!($user instanceof \App\Models\User && $user->role === 'admin') && !($user instanceof \App\Models\Teacher)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // $user = request()->user();
+        // if (!($user instanceof \App\Models\User && $user->role === 'admin') && !($user instanceof \App\Models\Teacher)) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
         $student = $this->studentService->findById($id);
+        
         return response()->json([
             'status' => 'success',
             'data' => $student
         ], 200);
     }
-    public function showStudentsByClassId($classId): JsonResponse
-    {
-        $user = request()->user();
-        if ($user instanceof \App\Models\User && $user->role === 'admin') {
-            $students = $this->studentService->getStudentsByClassId($classId);
-            return response()->json([
-                'status' => 'success',
-                'data' => $students
-            ], 200);
-        } elseif ($user instanceof \App\Models\Teacher) {
-            $class = \App\Models\Classes::where('teacher_id', $user->id)->where('id', $classId)->first();
-            if (!$class) {
-                return response()->json(['error' => 'Unauthorized: Teacher not assigned to this class'], 403);
-            }
-            $students = $this->studentService->getStudentsByClassId($classId);
-            return response()->json([
-                'status' => 'success',
-                'data' => $students
-            ], 200);
-        }
-        return response()->json(['error' => 'Unauthorized'], 403);
-    }
+    // public function showStudentsByClassId($classId): JsonResponse
+    // {
+    //     $user = request()->user();
+    //     if ($user instanceof \App\Models\User && $user->role === 'admin') {
+    //         $students = $this->studentService->getStudentsByClassId($classId);
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'data' => $students
+    //         ], 200);
+    //     } elseif ($user instanceof \App\Models\Teacher) {
+    //         $class = \App\Models\Classes::where('teacher_id', $user->id)->where('id', $classId)->first();
+    //         if (!$class) {
+    //             return response()->json(['error' => 'Unauthorized: Teacher not assigned to this class'], 403);
+    //         }
+    //         $students = $this->studentService->getStudentsByClassId($classId);
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'data' => $students
+    //         ], 200);
+    //     }
+    //     return response()->json(['error' => 'Unauthorized'], 403);
+    // }
 
     public function changePassword(Request $request, $id): JsonResponse
     {
@@ -106,14 +111,14 @@ class StudentController extends Controller
     }
     public function getStudentsByClassId($id)
     {
-        $user = request()->user();
+        // $user = request()->user();
 
-        if (
-            !($user instanceof \App\Models\Admin && $user->role === 'admin') &&
-            !($user instanceof \App\Models\Teacher)
-        ) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
+        // if (
+        //     !($user instanceof \App\Models\Admin && $user->role === 'admin') &&
+        //     !($user instanceof \App\Models\Teacher)
+        // ) {
+        //     return response()->json(['error' => 'Unauthorized'], 403);
+        // }
 
         try {
             $students = $this->studentService->getStudentsByClassId($id);

@@ -87,6 +87,7 @@ Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
 Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
 Route::get('/students/class/{classId}', [StudentController::class, 'showStudentsByClassId']);
 Route::get('/teachers/class/{classId}', [TeacherController::class, 'showByClassId']);
+
 Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::get('classes', [ClassController::class, 'index']);
     Route::post('create-classes', [ClassController::class, 'store']);
@@ -99,7 +100,9 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::delete('users/{id}', [AdminUserController::class, 'deleteUser']);
     Route::get('achievements', [AchievementController::class, 'index']);
 });
+
 Route::get('/students/byCourseId/{id}', [StudentController::class, 'showStudentsByCourseId']);
+
 Route::group(['prefix' => 'achievement'], function () {
     Route::get('/getByStudentId/{id}', [AchievementController::class, 'getByStudentId']);
     Route::post('/', [AchievementController::class, 'store']);
@@ -155,8 +158,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/track-visit', [StudentVisitController::class, 'trackVisit']);
     Route::get('/student-visits/{studentId}', [StudentVisitController::class, 'getVisitDates']);
     Route::get('/student-visits-by-class', [StudentVisitController::class, 'getVisitCountsByClass']);
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/students/class/{id}', [StudentController::class, 'getStudentsByClassId']);
 });
