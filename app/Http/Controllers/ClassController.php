@@ -16,6 +16,11 @@ class ClassController extends Controller
 
     public function index()
     {
+        $user = request()->user();
+        \Log::info('User data:', ['user' => $user]); // Debug
+        if (!($user instanceof \App\Models\Admin && $user->role === 'admin')) { // Sửa Amin thành Admin
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
         try {
             $classes = $this->classService->getAllClasses();
             return response()->json([
@@ -23,15 +28,20 @@ class ClassController extends Controller
                 'data' => $classes,
             ], 200);
         } catch (\Exception $e) {
+            \Log::error('Error fetching classes:', ['message' => $e->getMessage()]); // Debug
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
             ], 500);
         }
     }
+
     public function store(Request $request)
     {
-        
+        $user = request()->user();
+        if (!($user instanceof \App\Models\Admin && $user->role === 'admin')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'start_day' => 'required|date',
@@ -48,11 +58,26 @@ class ClassController extends Controller
             'class' => $newClass
         ], 201);
     }
-       public function getClassByTeacherId($id){
-        return $result = $this->classService->getClassDetailsByTeacherId($id);
-    }
-   public function getClassByClassId($id)
+
+    public function getClassByTeacherId($id)
     {
+        $user = request()->user();
+        if (!($user instanceof \App\Models\Teacher && $user->id == $id)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        $result = $this->classService->getClassDetailsByTeacherId($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $result
+        ], 200);
+    }
+
+    public function getClassByClassId($id)
+    {
+        $user = request()->user();
+        if (!($user instanceof \App\Models\Admin && $user->role === 'admin') && !($user instanceof \App\Models\Teacher)) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
         $class = $this->classService->getClassById($id);
 
         if (!$class) {
@@ -65,8 +90,6 @@ class ClassController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $class
-        ]);
+        ], 200);
     }
-
 }
-
