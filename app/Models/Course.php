@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\CourseStudent;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Classes;
 use App\Models\JournalTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,5 +45,9 @@ class Course extends Model
     }
     public function journalTimes (){
         return $this->hasMany(JournalTime::class,'course_id');
+    }
+    public function class()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
     }
 }

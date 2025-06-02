@@ -19,4 +19,14 @@ class CourseStudentService extends BaseService{
         }
         return false;
     }
+    public function multifulStore ($data){
+        if($data['students'] ){
+            $studentList = explode(',', $data['students']);
+            foreach($studentList as $student_id){
+                $this->repository->create(['course_id'=>$data['course_id'],'student_id'=>$student_id]);
+            }
+            return true;
+        }
+        return false;
+    }
 }

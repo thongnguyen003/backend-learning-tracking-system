@@ -14,8 +14,8 @@ class CourseRepository extends BaseRepository {
             $query1->select( 'teachers.id','teacher_name');
         }])
         ->withCount('students')
-        ->with(['courseStudents' => function($query2) {
-            $query2->select('id', 'course_students.course_id', 'course_students.student_id');
+        ->with(['courseStudents' => function($query2) use($studentId) {
+            $query2->where('student_id',$studentId)->select('id', 'course_students.course_id', 'course_students.student_id');
         }])
         ->get();
         if ($courses->isEmpty()) {

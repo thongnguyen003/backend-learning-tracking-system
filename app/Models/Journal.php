@@ -11,6 +11,7 @@ class Journal extends Model
 {
     use HasFactory;
     protected $table = "journals";
+    protected $fillable = ['course_student_id','start_day','end_day','open_date','deadline','accept_deadline'];
 
     public function course_student (){
         return $this->belongsTo(CourseStudent::class,'course_student_id');
