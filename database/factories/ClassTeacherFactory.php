@@ -1,7 +1,6 @@
 <?php
 
 namespace Database\Factories;
-
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\ClassTeacher;
 use App\Models\Teacher;
@@ -21,7 +20,7 @@ class ClassTeacherFactory extends Factory
     {
         return [
             'teacher_id' => Teacher::factory(), // Tạo một giáo viên ngẫu nhiên
-            'class_id' => Classes::factory(),  // Tạo một lớp học ngẫu nhiên
+            'classes_id' => Classes::factory(),  // Tạo một lớp học ngẫu nhiên
         ];
     }
 }

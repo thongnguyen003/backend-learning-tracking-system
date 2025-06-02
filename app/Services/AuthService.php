@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services;
-
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -32,6 +31,8 @@ class AuthService
                 break;
             case 'admin':
                 $model = Admin::class;
+                break;
+            default:
                 break;
             default:
                 throw new Exception('Unsupported role');

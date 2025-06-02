@@ -16,7 +16,7 @@ class BaseService {
         return $this->repository->all();
     }
 
-    public function getById(int $id): ?Model {
+    public function getById(int $id) {
         return $this->repository->find($id);
     }
 

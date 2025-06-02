@@ -23,4 +23,15 @@ class JournalTimeController extends Controller
         }
         return response()->json($journalTimes);
     }
+    public function update(Request $request, int $id)
+    {
+        $data = $request->all();
+        try {
+            $result = $this->service->update($id, $data);
+            return response()->json($result);
+        } catch (Exception $e){
+            $error= "Lỗi" . $e->getMessage();
+            return response()->json(['error'=>$error]);
+        }
+    }
 }

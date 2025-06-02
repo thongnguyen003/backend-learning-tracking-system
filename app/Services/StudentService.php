@@ -53,4 +53,13 @@ class StudentService
     {
         return $this->studentRepository->update($id, $data);
     }
+
+    public function findById(int $id){
+        return $this->studentRepository->findById($id);
+    }
+    public function showStudentsByCourseId(int $id)
+    {
+        return $this->studentRepository->getStudentsByCourseId($id);
+    }
 }
+

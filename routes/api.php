@@ -29,32 +29,38 @@ Route::group(['prefix' => 'journal'], function () {
 Route::apiResource('course-goals', CourseGoalController::class);
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'login']);
+
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::group(['prefix' => 'message'], function () {
-    Route::get('/getByJournalGoal/{id}', [MessageController::class, 'getMessageDetailByJournalGoalId']);
-    Route::get('/getByJournalClass/{id}', [MessageController::class, 'getMessageDetailByJournalClassId']);
-    Route::get('/getByJournalSelf/{id}', [MessageController::class, 'getMessageDetailByJournalSelfId']);
-    Route::group(['prefix' => 'detail'], function () {
-        Route::post('/', [DetailMessageController::class, 'store']);
-        Route::delete('/{id}', [DetailMessageController::class, 'destroy']);
-        Route::put('/{id}', [DetailMessageController::class, 'update']);
+
+Route::group(['prefix'=>'message'],function(){
+    Route::get('/getByJournalGoal/{id}',[MessageController::class,'getMessageDetailByJournalGoalId']);
+    Route::get('/getByJournalClass/{id}',[MessageController::class,'getMessageDetailByJournalClassId']);
+    Route::get('/getByJournalSelf/{id}',[MessageController::class,'getMessageDetailByJournalSelfId']);
+    Route::group(['prefix'=>'detail'],function(){
+        Route::post('/',[DetailMessageController::class,'store']);
+        Route::delete('/{id}',[DetailMessageController::class,'destroy']);
+        Route::put('/{id}',[DetailMessageController::class,'update']);
     });
-    Route::post('/', [MessageController::class, 'store']);
-    Route::get('/getByCourseGoal/{id}', [MessageController::class, 'getMessageDetailByCourseGoalId']);
+    Route::post('/',[MessageController::class,'store']);
+    Route::get('/getByCourseGoal/{id}',[MessageController::class,'getMessageDetailByCourseGoalId']);
 });
-
-Route::group(['prefix' => 'course'], function () {
-    Route::get('/getByStudentId/{id}', [CourseController::class, 'getCourseByStudentId']);
-    Route::get('/getByClassId/{id}', [CourseController::class, 'getCourseByClassId']);
-    Route::get('/getByCourseId/{id}', [CourseController::class, 'getCourseByCourseId']);
+Route::group(['prefix'=>'course'],function(){
+    Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
+    Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
+    Route::get('/getByCourseId/{id}',[CourseController::class,'getCourseByCourseId']);
+    Route::post('/',[CourseController::class,'store']);
+    Route::put('/{id}',[CourseController::class,'update']);
 });
-
-Route::apiResource('journal-times', JournalTimeController::class);
+Route::group(['prefix'=>'journal-times'],function(){
+    Route::put('/{id}',[JournalTimeController::class,'update']);
+});
 Route::get('journal-times/course/{courseId}', [JournalTimeController::class, 'getJournalTimesByCourseId']);
 Route::get('/teachers', [TeacherController::class, 'index']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
@@ -77,7 +83,7 @@ Route::prefix('admin')->middleware('auth:sanctum')->group(function () {
     Route::delete('users/{id}', [AdminUserController::class, 'deleteUser']);
     Route::get('achievements', [AchievementController::class, 'index']);
 });
-
+Route::get('/students/byCourseId/{id}', [StudentController::class, 'showStudentsByCourseId']);
 Route::group(['prefix' => 'achievement'], function () {
     Route::get('/getByStudentId/{id}', [AchievementController::class, 'getByStudentId']);
     Route::post('/', [AchievementController::class, 'store']);

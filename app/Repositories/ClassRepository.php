@@ -33,4 +33,13 @@ class ClassRepository
     {
         return $this->model->find($id);
     }
+    public function findStudents ($class_id){
+        $result = $this->model::where('id',$class_id)
+        ->with(['students'])
+        ->get();
+        if($result && count($result)>0){
+            return $result[0]->students;
+        }
+        return false;
+    }
 }

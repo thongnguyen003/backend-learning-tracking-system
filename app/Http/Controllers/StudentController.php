@@ -43,7 +43,6 @@ class StudentController extends Controller
             'data' => $student
         ], 200);
     }
-
     public function showStudentsByClassId($classId): JsonResponse
     {
         $user = request()->user();
@@ -130,4 +129,16 @@ class StudentController extends Controller
             ], 500);
         }
     }
+    public function showStudentsByClassId($classId)
+    {
+        $students = $this->studentService->getStudentsByClassId($classId);
+        return response()->json($students);
+    }
+    public function showStudentsByCourseId($id)
+    {
+        $students = $this->studentService->showStudentsByCourseId($id);
+        
+        return $students; // Trả về danh sách sinh viên dưới dạng JSON
+    }
 }
+ 
