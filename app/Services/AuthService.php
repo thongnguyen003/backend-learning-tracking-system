@@ -33,8 +33,6 @@ class AuthService
                 $model = Admin::class;
                 break;
             default:
-                break;
-            default:
                 throw new Exception('Unsupported role');
         }
 
