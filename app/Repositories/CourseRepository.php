@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 use App\Models\Course;
+use App\Models\Classes;
 class CourseRepository extends BaseRepository {
     public function __construct(Course $model){
         parent::__construct($model);
@@ -21,8 +22,12 @@ class CourseRepository extends BaseRepository {
         if ($courses->isEmpty()) {
             return response()->json(['message' => 'No courses found for the given student ID'], 404);
         }
-    
-        return response()->json($courses);
+        $classes = Classes::whereHas('students',function($query) use ($studentId){
+            $query->where('students.id',$studentId);
+        })
+        ->first();
+        $result = ['original'=>$courses,'class'=>$classes];
+        return $result;
     }
     public function getCoursesDetailsByClassId(int $classId){
         $courses = Course::where('class_id',$classId)
@@ -37,8 +42,9 @@ class CourseRepository extends BaseRepository {
         if ($courses->isEmpty()) {
             return response()->json(['message' => 'No courses found for the given student ID'], 404);
         }
-    
-        return response()->json($courses);
+        $classes = Classes::where('id',$classId)
+        ->first();
+        return $result = ['original'=>$courses,'class'=>$classes];
     }
     public function getCourseDetailsByCourseId(int $courseId){
         $course = Course::with('journalTimes')

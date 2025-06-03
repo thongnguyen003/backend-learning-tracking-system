@@ -160,3 +160,7 @@ Route::get('subjects/{id}', [SubjectController::class, 'show']);
 Route::post('subjects', [SubjectController::class, 'store']);
 Route::put('subjects/{id}', [SubjectController::class, 'update']);
 Route::delete('subjects/{id}', [SubjectController::class, 'destroy']);
+Route::group(['prefix'=>'class'], function(){
+    Route::get('/getByTeacherId/{id}', [ClassController::class, 'getClassByTeacherId']);
+    Route::get('/getByClassId/{id}', [ClassController::class, 'getClassByClassId']); // Thêm route mới
+});

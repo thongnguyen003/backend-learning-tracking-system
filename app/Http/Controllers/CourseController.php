@@ -56,8 +56,14 @@ class CourseController extends Controller
         //
     }
     public function getCourseByStudentId($id){
-        $result = $this->service->getCoursesDetailsByStudentId($id);
-        return response()->json($result);
+        try{
+            $result = $this->service->getCoursesDetailsByStudentId($id);
+            return response()->json($result);
+        }catch(Exception $e){
+            return response()->json([
+                'message' => 'Add  message failed: ' . $e->getMessage()
+            ], 500);
+        }
     }
     public function getCourseByClassId($id){
         $result = $this->service->getCoursesDetailsByClassId($id);

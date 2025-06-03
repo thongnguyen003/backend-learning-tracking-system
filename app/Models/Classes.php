@@ -18,7 +18,7 @@ class Classes extends Model
         'quantity',
         'start_day',
         'end_day',
-        'status',
+        'state',
     ];
 
     public function teachers(){

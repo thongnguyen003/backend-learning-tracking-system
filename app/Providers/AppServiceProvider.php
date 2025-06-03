@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema; 
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -20,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void{
+        if (!Schema::hasTable('courses') || !Schema::hasTable('journal_times')) {
+        Log::warning('Một hoặc nhiều bảng cần thiết không tồn tại. Dừng thực thi logic trong boot().');
+        return;
+    }
         $today = Carbon::now()->toDateString();
         $records = DB::table('courses')->where('next_date', '<=', $today)->where('status',1)->get();
         foreach ($records as $record) {
