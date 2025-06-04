@@ -23,6 +23,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
+use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\CourseStudentController;
 use App\Http\Controllers\ClassTeacherController;
 use App\Http\Controllers\SubjectController;
@@ -164,3 +165,24 @@ Route::group(['prefix'=>'class'], function(){
     Route::get('/getByTeacherId/{id}', [ClassController::class, 'getClassByTeacherId']);
     Route::get('/getByClassId/{id}', [ClassController::class, 'getClassByClassId']); // Thêm route mới
 });
+
+
+Route::prefix('journal/journal-classes')->group(function () {
+    Route::get('/', [JournalClassesController::class, 'index']);      
+    Route::get('/{id}', [JournalClassesController::class, 'show']);  
+    Route::post('/', [JournalClassesController::class, 'store']);    
+    Route::put('/{id}', [JournalClassesController::class, 'update']);
+    Route::delete('/{id}', [JournalClassesController::class, 'destroy']);
+});
+Route::prefix('journal/journal-selfs')->group(function () {
+    Route::get('/', [JournalSelfController::class, 'index']);
+    Route::get('/{id}', [JournalSelfController::class, 'show']);
+    Route::post('/', [JournalSelfController::class, 'store']);
+    Route::put('/{id}', [JournalSelfController::class, 'update']);
+    Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
+});
+
+Route::get('/teacher/{id}', [TeacherController::class, 'show']);
+Route::put('/teacher/update-profile/{id}', [TeacherController::class, 'updateProfile']);
+Route::put('/{role}/{userId}/avatar', [AvatarController::class, 'updateAvatar']);
+Route::put('/teacher/change-password/{id}', [TeacherController::class, 'changePassword']);

@@ -83,6 +83,6 @@ return response()->json($data);
     
     public function getStudentsByClassId($classId)
     {
-        return $this->model->where('class_id', $classId)->select('id', 'student_name')->get();
+        return $this->model->where('class_id', $classId)->select('id', 'student_name','avatar')->get();
     }
 }
