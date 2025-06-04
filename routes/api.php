@@ -23,6 +23,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
+use App\Http\Controllers\AvatarController;
 // use App\Http\Controllers\ClassController;
 
 // Route không yêu cầu xác thực
@@ -129,3 +130,8 @@ Route::prefix('journal/journal-selfs')->group(function () {
     Route::put('/{id}', [JournalSelfController::class, 'update']);
     Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
 });
+
+Route::get('/teacher/{id}', [TeacherController::class, 'show']);
+Route::put('/teacher/update-profile/{id}', [TeacherController::class, 'updateProfile']);
+Route::put('/{role}/{userId}/avatar', [AvatarController::class, 'updateAvatar']);
+Route::put('/teacher/change-password/{id}', [TeacherController::class, 'changePassword']);
