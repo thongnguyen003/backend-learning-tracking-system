@@ -33,7 +33,7 @@ class JournalClassesController extends Controller
 
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
         $data = $request->validate([
             'journal_id' => 'required|exists:journals,id',

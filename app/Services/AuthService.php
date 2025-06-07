@@ -1,20 +1,26 @@
 <?php
-namespace App\Services;
 
+namespace App\Services;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Exception;
+use App\Services\StudentVisitService;
 
 class AuthService
 {
+    protected $studentVisitService;
+
+    public function __construct()
+    {
+        $this->studentVisitService = new StudentVisitService();
+    }
+
     public function login($role, $email, $password)
     {
         \Log::info('Login attempt', ['role' => $role, 'email' => $email]);
-
-        $user = null;
-        $model = null;
 
         switch ($role) {
             case 'student':
@@ -23,9 +29,11 @@ class AuthService
             case 'teacher':
                 $model = Teacher::class;
                 break;
-            default:
-                $model = User::class;
+            case 'admin':
+                $model = Admin::class;
                 break;
+            default:
+                throw new Exception('Unsupported role');
         }
 
         $user = $model::where('email', $email)->first();
@@ -39,10 +47,15 @@ class AuthService
             \Log::error('Invalid password', ['email' => $email]);
             throw new Exception('Invalid password');
         }
-        // Tạo token với Sanctum
+
         $token = $user->createToken('auth-token')->plainTextToken;
 
         \Log::info('Login successful', ['role' => $role, 'email' => $email]);
+
+        if ($role === 'student') {
+            $this->studentVisitService->trackVisit($user->id);
+        }
+
         return ['user' => $user, 'token' => $token];
     }
 }

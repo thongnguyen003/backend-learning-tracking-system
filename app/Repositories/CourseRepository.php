@@ -1,9 +1,10 @@
 <?php
 namespace App\Repositories;
 use App\Models\Course;
-class CourseRepository extends Repository {
+use App\Models\Classes;
+class CourseRepository extends BaseRepository {
     public function __construct(Course $model){
-        $this->model = $model;
+        parent::__construct($model);
     }
     // retrive data of courses and name of student and number of course flowing courses by studetn_id
     public function getCoursesDetailsByStudentId(int $studentId){
@@ -14,15 +15,19 @@ class CourseRepository extends Repository {
             $query1->select( 'teachers.id','teacher_name');
         }])
         ->withCount('students')
-        ->with(['courseStudents' => function($query2) {
-            $query2->select('id', 'course_students.course_id', 'course_students.student_id');
+        ->with(['courseStudents' => function($query2) use($studentId) {
+            $query2->where('student_id',$studentId)->select('id', 'course_students.course_id', 'course_students.student_id');
         }])
         ->get();
         if ($courses->isEmpty()) {
             return response()->json(['message' => 'No courses found for the given student ID'], 404);
         }
-    
-        return response()->json($courses);
+        $classes = Classes::whereHas('students',function($query) use ($studentId){
+            $query->where('students.id',$studentId);
+        })
+        ->first();
+        $result = ['original'=>$courses,'class'=>$classes];
+        return $result;
     }
     public function getCoursesDetailsByClassId(int $classId){
         $courses = Course::where('class_id',$classId)
@@ -37,24 +42,28 @@ class CourseRepository extends Repository {
         if ($courses->isEmpty()) {
             return response()->json(['message' => 'No courses found for the given student ID'], 404);
         }
-    
-        return response()->json($courses);
+        $classes = Classes::where('id',$classId)
+        ->first();
+        return $result = ['original'=>$courses,'class'=>$classes];
     }
     public function getCourseDetailsByCourseId(int $courseId){
-        $course = Course::with(['teacher' => function($query1) {
-            $query1->select('teachers.id', 'teacher_name');
-        }])
+        $course = Course::with('journalTimes')
         ->withCount('students')
-        ->with(['courseStudents' => function($query2) {
-            $query2->select('id', 'course_students.course_id', 'course_students.student_id');
-        }])
-        ->find($courseId); // Use find to get the course by ID
+        ->find($courseId);
 
         if (!$course) {
-            return response()->json(['message' => 'Course not found for the given course ID'], 404);
+            return ['error' => 'Course not found for the given course ID'];
         }
 
-        return response()->json($course);
+        return $course;
     }
-    
+    public function create($data){
+        return parent::create($data);
+    }
+    public function update(int $id,array $data){
+        return parent::update( $id, $data);
+    }
+    public function find(int $id){
+        return parent::find($id);
+    }
 }

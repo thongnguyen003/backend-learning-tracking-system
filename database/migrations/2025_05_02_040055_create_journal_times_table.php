@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('course_id'); // FK course_id
             $table->date('start_date');
             $table->date('end_date');
-            $table->time('deadline')->nullable()->default('23:59:59'); 
+            $table->time('deadline')->nullable(); 
             $table->string('accept_deadline', 20)->nullable();
             $table->integer('status'); 
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');

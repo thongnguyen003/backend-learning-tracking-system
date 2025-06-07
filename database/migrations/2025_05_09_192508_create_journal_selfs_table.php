@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('date'); 
             $table->text('topic');
             $table->text('description'); 
-            $table->time('duration'); 
+            $table->text('duration'); 
             $table->text('resources'); 
             $table->text('activity'); 
             $table->boolean('concentration'); 

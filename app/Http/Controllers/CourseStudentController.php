@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Services\CourseStudentService;
 use Illuminate\Http\Request;
-use App\Services\JournalService;
-use Illuminate\Support\Facades\Response;
 
-class JournalController extends Controller
+class CourseStudentController extends Controller
 {
-    protected $service;
-    public function __construct(JournalService $service){
+    protected CourseStudentService $service;
+
+    public function __construct(CourseStudentService $service)
+    {
         $this->service = $service;
     }
     /**
@@ -25,7 +25,7 @@ class JournalController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -35,7 +35,7 @@ class JournalController extends Controller
     {
         $data = $request->all();
         try {
-            $result =  $this->service->create($data);
+            $result = $this->service->multifulStore($data);
             return response()->json($result);
         } catch (Exception $e){
             $error= "Lỗi" . $e->getMessage() ;
@@ -49,10 +49,6 @@ class JournalController extends Controller
     public function show(string $id)
     {
         //
-    }
-    public function getJournalsByCourseStudentId($id){
-        $result = $this->service->getJournalsDetailsByCourseStudentId($id);
-        return response()->json($result);
     }
 
     /**

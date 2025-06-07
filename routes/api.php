@@ -23,7 +23,12 @@ use App\Http\Controllers\ClassController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Controllers\JournalClassesController;
 use App\Http\Controllers\JournalSelfController;
+use App\Http\Controllers\AvatarController;
+use App\Http\Controllers\CourseStudentController;
+use App\Http\Controllers\ClassTeacherController;
+use App\Http\Controllers\SubjectController;
 // use App\Http\Controllers\ClassController;
+use App\Http\Controllers\StudentVisitController;
 
 // Route không yêu cầu xác thực
 // Comment out or remove this line temporarily to fix missing StudentProfileController error
@@ -32,6 +37,23 @@ Route::put('/student/change-password/{id}', [StudentController::class, 'changePa
 Route::get('course-goals/getByCourseStudentId/{courseStudentId}', [CourseGoalController::class, 'indexByStudent']);
 Route::group(['prefix' => 'journal'], function () {
     Route::get('/getByCourseStudentId/{id}', [JournalController::class, 'getJournalsByCourseStudentId']);
+    Route::post('/',[JournalController::class, 'store']);
+});
+Route::prefix('journal/journal-classes')->group(function () {
+    Route::get('/', [JournalClassesController::class, 'index']);
+    Route::get('/{id}', [JournalClassesController::class, 'show']);
+    Route::post('/', [JournalClassesController::class, 'store']);
+    Route::put('/{id}', [JournalClassesController::class, 'update']);
+    Route::delete('/{id}', [JournalClassesController::class, 'destroy']);
+});
+
+
+Route::prefix('journal/journal-selfs')->group(function () {
+    Route::get('/', [JournalSelfController::class, 'index']);
+    Route::get('/{id}', [JournalSelfController::class, 'show']);
+    Route::post('/', [JournalSelfController::class, 'store']);
+    Route::put('/{id}', [JournalSelfController::class, 'update']);
+    Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
 });
 Route::apiResource('course-goals', CourseGoalController::class);
 
@@ -57,13 +79,18 @@ Route::group(['prefix'=>'message'],function(){
 });
 Route::group(['prefix'=>'course'],function(){
     Route::get('/getByStudentId/{id}',[CourseController::class,'getCourseByStudentId']);
-    Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
+Route::get('/getByClassId/{id}',[CourseController::class,'getCourseByClassId']);
     Route::get('/getByCourseId/{id}',[CourseController::class,'getCourseByCourseId']);
+    Route::post('/',[CourseController::class,'store']);
+    Route::put('/{id}',[CourseController::class,'update']);
+});
+Route::group(['prefix'=>'course-student'],function(){
+    Route::post('/',[CourseStudentController::class,'store']);
+});
+Route::group(['prefix'=>'journal-times'],function(){
+    Route::put('/{id}',[JournalTimeController::class,'update']);
 });
 
-
-
-Route::apiResource('journal-times', JournalTimeController::class);
 Route::get('journal-times/course/{courseId}', [JournalTimeController::class, 'getJournalTimesByCourseId']);
 Route::get('/teachers', [TeacherController::class, 'index']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
@@ -73,7 +100,7 @@ Route::get('/journal-goals/{id}', [JournalGoalController::class, 'show']);
 Route::post('/journal-goals', [JournalGoalController::class, 'store']);
 Route::put('/journal-goals/{id}', [JournalGoalController::class, 'update']);
 Route::delete('/journal-goals/{id}', [JournalGoalController::class, 'destroy']);
-Route::get('/students/class/{classId}', [StudentController::class, 'showStudentsByClassId']);
+Route::get('/students/byCourseId/{id}', [StudentController::class, 'showStudentsByCourseId']);
 
 
 
@@ -109,6 +136,31 @@ Route::post('/admin/create-classes', [ClassController::class, 'store']);
 Route::get('/student/{id}', [StudentController::class, 'show']);
 Route::put('/student/update-profile/{id}', [StudentController::class, 'updateProfile']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/track-visit', [StudentVisitController::class, 'trackVisit']);
+    Route::get('/student-visits/{studentId}', [StudentVisitController::class, 'getVisitDates']);
+    Route::get('/student-visits-by-class', [StudentVisitController::class, 'getVisitCountsByClass']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/students/class/{id}', [StudentController::class, 'getStudentsByClassId']);
+});
+Route::prefix('class-teachers')->group(function () {
+    Route::get('/', [ClassTeacherController::class, 'index']);
+    Route::get('/{id}', [ClassTeacherController::class, 'show']);
+    Route::post('/', [ClassTeacherController::class, 'store']);
+    Route::put('/{id}', [ClassTeacherController::class, 'update']);
+    Route::delete('/', [ClassTeacherController::class, 'destroy']);
+    Route::get('/{id}', [ClassTeacherController::class, 'showTeachersByClassId']);
+});
+Route::get('/class-teachers/class/{classId}/teachers', [ClassTeacherController::class, 'showTeachersByClassId']);
+Route::get('/students/classes/{classId}', [StudentController::class, 'showStudentsByClassId']);
+Route::get('teachers/{teacherId}/classes', [ClassTeacherController::class, 'showClassesByTeacherId']);
+Route::get('subjects', [SubjectController::class, 'index']);
+Route::get('subjects/{id}', [SubjectController::class, 'show']);
+Route::post('subjects', [SubjectController::class, 'store']);
+Route::put('subjects/{id}', [SubjectController::class, 'update']);
+Route::delete('subjects/{id}', [SubjectController::class, 'destroy']);
 Route::group(['prefix'=>'class'], function(){
     Route::get('/getByTeacherId/{id}', [ClassController::class, 'getClassByTeacherId']);
     Route::get('/getByClassId/{id}', [ClassController::class, 'getClassByClassId']); // Thêm route mới
@@ -129,3 +181,8 @@ Route::prefix('journal/journal-selfs')->group(function () {
     Route::put('/{id}', [JournalSelfController::class, 'update']);
     Route::delete('/{id}', [JournalSelfController::class, 'destroy']);
 });
+
+Route::get('/teacher/{id}', [TeacherController::class, 'show']);
+Route::put('/teacher/update-profile/{id}', [TeacherController::class, 'updateProfile']);
+Route::put('/{role}/{userId}/avatar', [AvatarController::class, 'updateAvatar']);
+Route::put('/teacher/change-password/{id}', [TeacherController::class, 'changePassword']);

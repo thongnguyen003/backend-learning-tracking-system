@@ -32,7 +32,20 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $array['course_name']= $request->input('course_name');
+        $chooseAllStudent = $request->input('chooseAllStudent');
+        $array['start_day'] = $request->input('start_day');
+        $array['end_day'] = $request->input('end_day');
+        $array['class_id'] = $request->input('class_id');
+        $array['teacher_id'] = $request->input('teacher_id');
+        $data = ['array'=>$array,'chooseAllStudent'=>$chooseAllStudent];
+        try {
+            $result = $this->service->create($data);
+            return response()->json($result);
+        } catch (Exception $e){
+            $error= "Lỗi" . $e->getMessage() . "code" . $e->getCode() . "file" . $e->getFile() . "line" . $e->getLine();
+            return response()->json(['error'=>$error]);
+        }
     }
 
     /**
@@ -43,16 +56,28 @@ class CourseController extends Controller
         //
     }
     public function getCourseByStudentId($id){
-        $result = $this->service->getCoursesDetailsByStudentId($id);
-        return response()->json($result);
+        try{
+            $result = $this->service->getCoursesDetailsByStudentId($id);
+            return response()->json($result);
+        }catch(Exception $e){
+            return response()->json([
+                'message' => 'Add  message failed: ' . $e->getMessage()
+            ], 500);
+        }
     }
     public function getCourseByClassId($id){
         $result = $this->service->getCoursesDetailsByClassId($id);
         return response()->json($result);
     }
     public function getCourseByCourseId($id){
-        $result = $this->service->getCoursesDetailsByCourseId($id);
-        return response()->json($result);
+        try{
+            $result =  $this->service->getCoursesDetailsByCourseId($id);
+            return response()->json($result);
+        }catch(Exception $e){
+            return response()->json([
+                'message' => 'Add  message failed: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
 
@@ -67,9 +92,16 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, int $id)
     {
-        //
+        $data = $request->all();
+        try {
+            $result = $this->service->update($id, $data);
+            return response()->json($result);
+        } catch (Exception $e){
+            $error= "Lỗi" . $e->getMessage() ;
+            return response()->json(['error'=>$error]);
+        }
     }
 
     /**

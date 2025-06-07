@@ -15,7 +15,7 @@ class BaseRepository {
         return $this->model->all();
     }
 
-    public function find(int $id): ?Model {
+    public function find(int $id){
         return $this->model->find($id);
     }
 
@@ -25,6 +25,9 @@ class BaseRepository {
 
     public function update(int $id, array $data){
         $record = $this->find($id);
+        if(empty($record)){
+             throw new \Exception("invalid data.");
+        }
         if ($record) {
             $record->update($data);
             return $record;

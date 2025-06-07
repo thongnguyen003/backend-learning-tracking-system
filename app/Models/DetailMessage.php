@@ -17,6 +17,6 @@ class DetailMessage extends Model
         return $this->belongsTo(Student::class,'student_id');
     }
     public function teacher (){
-        return $this->belongsTo(Teacher::class,'teacherid');
+        return $this->belongsTo(Teacher::class,'teacher_id');
     }
 }

@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             JournalGoalSeeder::class,
             JournalSelfSeeder::class,
             MessageSeeder::class,
-            DetailMessageSeeder::class
+            DetailMessageSeeder::class,
+            AdminSeeder::class
         ]);
     }
 }

@@ -58,7 +58,7 @@ class AdminUserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Lỗi khi lấy danh sách người dùng: ' . $e->getMessage(),
+                'message' => 'Error retrieving user list: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -82,7 +82,7 @@ class AdminUserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Lỗi khi lấy danh sách học sinh: ' . $e->getMessage(),
+                'message' => 'Error retrieving student list: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -111,7 +111,7 @@ class AdminUserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Lỗi khi lấy danh sách giáo viên: ' . $e->getMessage(),
+                'message' => 'Error retrieving teacher list: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -135,7 +135,7 @@ class AdminUserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Lỗi khi lấy danh sách quản trị viên: ' . $e->getMessage(),
+                'message' => 'Error retrieving admin list: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -161,9 +161,9 @@ class AdminUserController extends Controller
             DB::beginTransaction();
             try {
                 foreach ($data['users'] as $user) {
-                    // Kiểm tra nếu role là student thì bắt buộc phải có class_id
+                    // Check if role is student then class_id is required
                     if ($user['role'] === 'student' && !isset($user['class_id'])) {
-                        $errors[] = "class_id là bắt buộc cho học sinh với email {$user['email']}.";
+                        $errors[] = "class_id is required for student with email {$user['email']}.";
                         continue;
                     }
 
@@ -176,59 +176,59 @@ class AdminUserController extends Controller
                     try {
                         if ($user['role'] === 'student') {
                             if (\App\Models\Student::where('email', $user['email'])->exists()) {
-                                $errors[] = "Email {$user['email']} đã được sử dụng cho một học sinh.";
+                                $errors[] = "Email {$user['email']} is already used by a student.";
                                 continue;
                             }
                             $createdUsers = array_merge($createdUsers, $this->studentService->createMultiple([$user]));
                         } elseif ($user['role'] === 'teacher') {
                             if (\App\Models\Teacher::where('email', $user['email'])->exists()) {
-                                $errors[] = "Email {$user['email']} đã được sử dụng cho một giáo viên.";
+                                $errors[] = "Email {$user['email']} is already used by a teacher.";
                                 continue;
                             }
                             $createdUsers = array_merge($createdUsers, $this->teacherService->createMultiple([$user]));
                         } elseif ($user['role'] === 'admin') {
                             if (\App\Models\Admin::where('email', $user['email'])->exists()) {
-                                $errors[] = "Email {$user['email']} đã được sử dụng cho một quản trị viên.";
+                                $errors[] = "Email {$user['email']} is already used by an admin.";
                                 continue;
                             }
                             $createdUsers = array_merge($createdUsers, $this->adminService->createMultiple([$user]));
                         }
                     } catch (\Exception $e) {
-                        $errors[] = "Không thể tạo người dùng {$user['email']}: {$e->getMessage()}";
+                        $errors[] = "Could not create user {$user['email']}: {$e->getMessage()}";
                     }
                 }
 
                 if (empty($errors)) {
                     DB::commit();
                     return response()->json([
-                        'message' => "Đã thêm thành công " . count($createdUsers) . " tài khoản người dùng!",
+                        'message' => "Successfully added " . count($createdUsers) . " user accounts!",
                         'created' => count($createdUsers),
                     ], 201);
                 } else {
                     DB::rollBack();
                     return response()->json([
-                        'message' => 'Một số người dùng không thể được thêm.',
+                        'message' => 'Some users could not be added.',
                         'errors' => $errors,
                         'created' => count($createdUsers),
                     ], 207);
                 }
             } catch (\Exception $e) {
                 DB::rollBack();
-                $errors[] = "Giao dịch thất bại: {$e->getMessage()}";
+                $errors[] = "Transaction failed: {$e->getMessage()}";
                 return response()->json([
-                    'message' => 'Một số người dùng không thể được thêm.',
+                    'message' => 'Some users could not be added.',
                     'errors' => $errors,
                     'created' => count($createdUsers),
                 ], 207);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'message' => 'Dữ liệu đầu vào không hợp lệ.',
+                'message' => 'Invalid input data.',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Lỗi server khi thêm người dùng: ' . $e->getMessage(),
+                'message' => 'Server error when adding users: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -250,29 +250,39 @@ class AdminUserController extends Controller
             $updatedUser = null;
 
             if ($data['role'] === 'student') {
+                if (isset($data['name'])) {
+                    $data['student_name'] = $data['name'];  // đổi key thành tên cột đúng
+                    unset($data['name']);
+                }
                 $updatedUser = $this->studentService->update($id, $data);
+
             } elseif ($data['role'] === 'teacher') {
                 if (isset($data['name'])) {
                     $data['teacher_name'] = $data['name'];
                     unset($data['name']);
                 }
                 $updatedUser = $this->teacherService->update($id, $data);
+
             } elseif ($data['role'] === 'admin') {
+                if (isset($data['name'])) {
+                    $data['admin_name'] = $data['name'];
+                    unset($data['name']);
+                }
                 $updatedUser = $this->adminService->update($id, $data);
             }
 
             return response()->json([
-                'message' => 'Cập nhật người dùng thành công.',
+                'message' => 'User updated successfully.',
                 'user' => $updatedUser,
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'message' => 'Dữ liệu đầu vào không hợp lệ.',
+                'message' => 'Invalid input data.',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Lỗi server khi cập nhật người dùng: ' . $e->getMessage(),
+                'message' => 'Server error when updating user: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -303,23 +313,23 @@ class AdminUserController extends Controller
 
             if (!$user) {
                 return response()->json([
-                    'message' => "Không tìm thấy người dùng với ID {$id} và vai trò {$data['role']}.",
+                    'message' => "User with ID {$id} and role {$data['role']} not found.",
                 ], 404);
             }
 
             $service->delete($id);
 
             return response()->json([
-                'message' => 'Xóa người dùng thành công.',
+                'message' => 'User deleted successfully.',
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
-                'message' => 'Dữ liệu đầu vào không hợp lệ.',
+                'message' => 'Invalid input data.',
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Lỗi khi xóa người dùng: ' . $e->getMessage(),
+                'message' => 'Error deleting user: ' . $e->getMessage(),
             ], 500);
         }
     }
