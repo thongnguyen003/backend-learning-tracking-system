@@ -13,6 +13,7 @@ class CourseStudent extends Model
 {
     use HasFactory; 
     protected $table = "course_students";
+    protected $fillable = ['student_id','course_id'];
     //
     public function journals (){
         return $this->hasMany(journal::class,'course_student_id');

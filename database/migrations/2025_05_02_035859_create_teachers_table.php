@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
+            $table->string('avatar')->nullable();
             $table->unsignedBigInteger('subject_id')->nullable();
             $table->string('teacher_name', 50); 
             $table->date('day_of_birth')->nullable();

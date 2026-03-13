@@ -19,6 +19,6 @@ public function register(): void
 
     public function boot(): void
     {
-        // No additional boot logic needed
+        
     }
 }

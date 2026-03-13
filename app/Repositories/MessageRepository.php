@@ -1,6 +1,10 @@
 <?php
 namespace App\Repositories;
 use App\Models\Message;
+use App\Models\JournalSelf;
+use App\Models\JournalClasses;
+use App\Models\JournalGoal;
+use App\Models\CourseGoal;
 class MessageRepository  extends BaseRepository
 {
     public function __construct(Message $model){
@@ -14,17 +18,26 @@ class MessageRepository  extends BaseRepository
               ->with(['student', 'teacher']);
         }])
         ->get();
-        $teacher = Message::where('journal_goal_id', $id)
-        ->with("journal_goal.journal.course_student.student.class.class_teachers.teacher")
+        $teacher = JournalGoal::where('id', $id)
+        ->with("journal.course_student.course.class.class_teachers.teacher")
         ->first();
-        if ($teacher && $teacher->journal_goal) {
-            $teacherData = $teacher->journal_goal->journal
-                ->course_student->student->class
-                ->class_teachers;
+        $student =  JournalGoal::where('id', $id)
+         ->with("journal.course_student.student")
+        ->first();
+        if ($student ) {
+            $studentData = $student->journal
+                ->course_student->student;
         } else {
+            $studentData = null; 
+        }
+        if ($teacher ) {
+            $teacherData = $teacher->journal
+                ->course_student->course->class
+                ->class_teachers;
+        }  else {
             $teacherData = null; 
         }
-        $result = ['teacher'=>$teacherData,'message'=>$data];
+        $result = ['teacher'=>$teacherData,'message'=>$data,'student'=>$studentData];
         
         return response()->json($result);
     }
@@ -36,39 +49,56 @@ class MessageRepository  extends BaseRepository
               ->with(['student', 'teacher']);
         }])
         ->get();
-        $teacher = $this->model::where('journal_class_id', $id)
-        ->with("journal_goal.journal.course_student.student.class.class_teachers.teacher")
+        $teacher = JournalClasses::where('id', $id)
+        ->with("journal.course_student.course.class.class_teachers.teacher")
         ->first();
-        if ($teacher && $teacher->journal_goal) {
-            $teacherData = $teacher->journal_goal->journal
-                ->course_student->student->class
+        $student =  JournalClasses::where('id', $id)
+         ->with("journal.course_student.student")
+        ->first();
+        if ($student ) {
+            $studentData = $student->journal
+                ->course_student->student;
+        } else {
+            $studentData = null; 
+        }
+        if ($teacher ) {
+            $teacherData = $teacher->journal
+                ->course_student->course->class
                 ->class_teachers;
         } else {
             $teacherData = null; 
         }
-        $result = ['teacher'=>$teacherData,'message'=>$data];
+        $result = ['teacher'=>$teacherData,'message'=>$data,'student'=>$studentData];
         
         return response()->json($result);
     }
     public function getMessageDetailByJournalSelfId($id){
         $data =  $this->model::where('journal_self_id',$id)
         ->with(['detail_messages' => function ($query) {
-        $query->whereNotNull('student_id')
-              ->orWhereNotNull('teacher_id') 
-              ->with(['student', 'teacher']);
+        $query->with('student')->with('teacher');
         }])
         ->get();
-        $teacher =  $this->model::where('journal_self_id', $id)
-        ->with("journal_goal.journal.course_student.student.class.class_teachers.teacher")
+        
+        $teacher =  JournalSelf::where('id', $id)
+         ->with("journal.course_student.course.class.class_teachers.teacher")
         ->first();
-        if ($teacher && $teacher->journal_goal) {
-            $teacherData = $teacher->journal_goal->journal
-                ->course_student->student->class
+        $student =  JournalSelf::where('id', $id)
+         ->with("journal.course_student.student")
+        ->first();
+        if ($student ) {
+            $studentData = $student->journal
+                ->course_student->student;
+        } else {
+            $studentData = null; 
+        }
+        if ($teacher ) {
+            $teacherData = $teacher->journal
+                ->course_student->course->class
                 ->class_teachers;
         } else {
             $teacherData = null; 
         }
-        $result = ['teacher'=>$teacherData,'message'=>$data];
+        $result = ['teacher'=>$teacherData,'message'=>$data,'student'=>$studentData];
         
         return response()->json($result);
     }
@@ -91,17 +121,26 @@ class MessageRepository  extends BaseRepository
               ->with(['student', 'teacher']);
         }])
         ->get();
-        $teacher = Message::where('journal_self_id', $id)
-        ->with("course_goal.course_student.student.class.class_teachers.teacher")
+        $teacher = CourseGoal::where('id', $id)
+        ->with("course_student.course.class.class_teachers.teacher")
         ->first();
-        if ($teacher && $teacher->journal_goal) {
-            $teacherData = $teacher->journal_goal->journal
-                ->course_student->student->class
+        $student =  CourseGoal::where('id', $id)
+         ->with("course_student.student")
+        ->first();
+        if ($student ) {
+            $studentData = $student
+                ->course_student->student;
+        } else {
+            $studentData = null; 
+        }
+        if ($teacher ) {
+            $teacherData = $teacher
+                ->course_student->course->class
                 ->class_teachers;
         } else {
             $teacherData = null; 
         }
-        $result = ['teacher'=>$teacherData,'message'=>$data];
+        $result = ['teacher'=>$teacherData,'message'=>$data,'student'=>$studentData];
         
         return response()->json($result);
 

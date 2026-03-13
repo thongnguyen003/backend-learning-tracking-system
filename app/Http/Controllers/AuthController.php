@@ -21,7 +21,7 @@ class AuthController extends Controller
         $password = $request->input('password');
 
         try {
-            if (!in_array($role, ['student', 'teacher', 'web'])) {
+            if (!in_array($role, ['student', 'teacher', 'admin'])) {
                 throw new Exception('Invalid role');
             }
 
@@ -31,7 +31,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Login successful',
                 'role' => $role,
-                'user' => $user->only(['id', 'email', 'name']),
+                'user' => $user,
                 'token' => $result['token'],
             ]);
         } catch (Exception $e) {

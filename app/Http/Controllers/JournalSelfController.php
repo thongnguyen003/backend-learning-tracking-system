@@ -43,8 +43,8 @@ class JournalSelfController extends Controller
             'concentration' => 'required',
             'follow_plan' => 'required',
             'evaluation' => 'required|string',
-            'reinforcing_learning' => 'required|string',
-            'notes' => 'nullable|string',
+            'reinforcing_learning' => 'nullable',
+            'notes' => 'nullable',
         ]);
 
 

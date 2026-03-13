@@ -12,7 +12,9 @@ class ClassRepository
     {
         $this->model = $model;
     }
-    public function getAllClasses()
+    
+
+     public function getAllClasses()
     {
         return Classes::all(); 
     }
@@ -52,5 +54,14 @@ class ClassRepository
         return $this->model
             ->withCount('students') // đếm số học sinh
             ->find($id, ['id', 'name', 'start_day']); // lấy các cột cần thiết
+    }
+    public function findStudents ($class_id){
+        $result = $this->model::where('id',$class_id)
+        ->with(['students'])
+        ->get();
+        if($result && count($result)>0){
+            return $result[0]->students;
+        }
+        return false;
     }
 }

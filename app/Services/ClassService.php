@@ -2,16 +2,19 @@
 
 namespace App\Services;
 
+use App\Models\Classes;
 use App\Repositories\ClassRepository;
 
-class ClassService extends Service
+class ClassService
 {
     protected $classRepository;
+
     public function __construct(ClassRepository $classRepository)
     {
         $this->classRepository = $classRepository;
     }
 
+    
     public function getAllClasses()
     {
         return $this->classRepository->getAllClasses();
@@ -29,10 +32,3 @@ class ClassService extends Service
         return $this->classRepository->getClassById($id);
     }
 }
-
-
-
-
-
-
- 

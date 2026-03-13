@@ -14,7 +14,7 @@ class ClassController extends Controller
         $this->classService = $classService;
     }
 
-    public function index()
+     public function index()
     {
         try {
             $classes = $this->classService->getAllClasses();
@@ -69,4 +69,3 @@ class ClassController extends Controller
     }
 
 }
-

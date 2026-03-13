@@ -64,7 +64,7 @@ class MessageController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'Add  message failed: ' . $e->getMessage()
-            ], 401);
+            ], 500);
         }
     }
 
